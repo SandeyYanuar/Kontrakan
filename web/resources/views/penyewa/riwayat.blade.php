@@ -17,14 +17,9 @@
                     <li class="flex items-center justify-between gap-3 px-4 py-3">
                         <div>
                             <p class="font-semibold">{{ Format::bulan($invoice->periode) }}</p>
-                            <p class="text-xs text-muted">
-                                {{ Format::rupiah($invoice->total) }}, unit {{ $invoice->lease->unit->kode_unit }}
-                                @if ($invoice->paymentTerakhir?->reviewed_at)
-                                    , lunas {{ Format::tanggalPendek($invoice->paymentTerakhir->reviewed_at) }}
-                                @endif
-                            </p>
+                            <p class="text-xs text-muted">{{ Format::rupiah($invoice->total) }}, unit {{ $invoice->lease->unit->kode_unit }}@if ($invoice->paymentTerakhir?->reviewed_at), lunas {{ Format::tanggalPendek($invoice->paymentTerakhir->reviewed_at) }}@endif</p>
                         </div>
-                        <svg viewBox="0 0 24 24" class="size-[22px] shrink-0" role="img" aria-label="Lunas"><circle cx="12" cy="12" r="11" fill="#e2efe7"/><path d="M7 12.5l3.2 3.2L17 9" fill="none" stroke="#2e6a4c" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        <a href="{{ route('kuitansi', $invoice) }}" class="shrink-0 rounded-lg border border-line px-3 py-2 text-xs font-semibold text-dicek">Kuitansi PDF</a>
                     </li>
                 @endforeach
             </ul>

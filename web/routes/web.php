@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\TagihanController;
 use App\Http\Controllers\Admin\UnitController;
 use App\Http\Controllers\AkunController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\KuitansiController;
 use App\Http\Controllers\Penyewa\BerandaController;
 use App\Http\Controllers\Penyewa\KtpController;
 use App\Http\Controllers\Penyewa\PembayaranController;
@@ -26,6 +27,8 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [LoginController::class, 'destroy'])->name('logout');
+
+    Route::get('/kuitansi/{invoice}', KuitansiController::class)->middleware('peran:super_admin,admin,tenant')->name('kuitansi');
 
     Route::middleware('peran:super_admin,admin,tenant')->prefix('akun')->name('akun.')->group(function () {
         Route::get('/password', [AkunController::class, 'editPassword'])->name('password');

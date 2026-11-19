@@ -64,7 +64,10 @@
                                 </span>
                             </div>
                             @if ($bayar && $bayar->status === \App\Models\Payment::DISETUJUI)
-                                <p class="mt-1 text-xs text-muted">Disetujui {{ $bayar->pemeriksa?->name }}, {{ Format::tanggal($bayar->reviewed_at) }}</p>
+                                <p class="mt-1 text-xs text-muted">
+                                    Disetujui {{ $bayar->pemeriksa?->name }}, {{ Format::tanggal($bayar->reviewed_at) }}.
+                                    <a href="{{ route('kuitansi', $invoice) }}" class="font-semibold text-dicek">Kuitansi PDF</a>
+                                </p>
                                 @can('super-admin')
                                     <details class="mt-2">
                                         <summary class="cursor-pointer text-xs font-semibold text-telat">Batalkan persetujuan</summary>
