@@ -1,0 +1,65 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+
+/*
+ * Token visual dari desain yang disetujui (docs/superpowers/specs/2026-11-20-kontrakan-design.md, bagian 7).
+ * Dipakai sebagai kelas Tailwind, misalnya bg-plaster, text-muted, bg-lunas, border-line.
+ */
+@theme {
+    --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+
+    --color-plaster: #eceff2;
+    --color-paper: #ffffff;
+    --color-soft: #f6f8fa;
+    --color-ink: #18222f;
+    --color-muted: #5a6573;
+    --color-line: #dce1e7;
+    --color-roof: #3b4656;
+
+    --color-lunas: #2e6a4c;
+    --color-lunas-bg: #e2efe7;
+    --color-dicek: #2c4f86;
+    --color-dicek-bg: #e1e9f5;
+    --color-dekat: #b07415;
+    --color-dekat-bg: #fbefd8;
+    --color-telat: #a8261c;
+    --color-telat-bg: #f8e0dc;
+    --color-wa: #1da851;
+    --color-wa-hover: #17934a;
+}
+
+@layer base {
+    body {
+        @apply bg-plaster text-ink antialiased;
+        font-variant-numeric: tabular-nums;
+    }
+
+    :focus-visible {
+        @apply outline-3 outline-offset-2 outline-dicek;
+    }
+}
+
+/* Atap: strip genteng di bagian atas fasad dan menu admin. */
+@utility atap {
+    background-color: var(--color-roof);
+    background-image: repeating-linear-gradient(90deg, rgb(255 255 255 / 0.07) 0 2px, transparent 2px 26px);
+}
+
+/* Teras: lantai di bawah deretan pintu. */
+@utility teras {
+    background-color: #e9ecf0;
+    background-image: repeating-linear-gradient(90deg, #dadfe5 0 1px, transparent 1px 34px);
+    border-top: 2px solid #cdd3da;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}
