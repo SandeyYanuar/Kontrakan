@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * Tagihan sewa satu periode (YYYY-MM) untuk satu kontrak sewa.
@@ -60,6 +61,32 @@ class Invoice extends Model
     public function items(): HasMany
     {
         return $this->hasMany(InvoiceItem::class);
+    }
+
+    /**
+     * @return HasMany<Payment, $this>
+     */
+    public function payments(): HasMany
+    {
+        return $this->hasMany(Payment::class);
+    }
+
+    /**
+     * Bukti transfer terakhir yang diupload.
+     *
+     * @return HasOne<Payment, $this>
+     */
+    public function paymentTerakhir(): HasOne
+    {
+        return $this->hasOne(Payment::class)->latestOfMany();
+    }
+
+    /**
+     * Penyewa boleh mengupload bukti selama tagihan belum lunas dan tidak sedang dicek.
+     */
+    public function bisaDibayar(): bool
+    {
+        return $this->status->belumLunas();
     }
 
     /**

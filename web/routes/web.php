@@ -8,7 +8,9 @@ use App\Http\Controllers\Admin\TagihanController;
 use App\Http\Controllers\Admin\UnitController;
 use App\Http\Controllers\AkunController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Penyewa\BerandaController;
 use App\Http\Controllers\Penyewa\KtpController;
+use App\Http\Controllers\Penyewa\PembayaranController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', fn () => auth()->check()
@@ -73,7 +75,13 @@ Route::middleware(['auth', 'peran:super_admin,admin'])->prefix('admin')->name('a
 });
 
 Route::middleware(['auth', 'peran:tenant'])->name('penyewa.')->group(function () {
-    Route::view('/beranda', 'penyewa.beranda')->name('beranda');
+    Route::get('/beranda', [BerandaController::class, 'beranda'])->name('beranda');
+    Route::get('/riwayat', [BerandaController::class, 'riwayat'])->name('riwayat');
+    Route::get('/profil', [BerandaController::class, 'profil'])->name('profil');
+    Route::put('/profil/darurat', [BerandaController::class, 'simpanDarurat'])->name('profil.darurat');
+    Route::get('/tagihan/{invoice}/bayar', [PembayaranController::class, 'create'])->name('bayar');
+    Route::post('/tagihan/{invoice}/bayar', [PembayaranController::class, 'store'])->name('bayar.simpan');
+    Route::get('/bukti/{payment}', [PembayaranController::class, 'bukti'])->name('bukti');
     Route::get('/profil/ktp', [KtpController::class, 'edit'])->name('ktp');
     Route::post('/profil/ktp', [KtpController::class, 'simpan'])->name('ktp.simpan');
     Route::get('/profil/ktp/foto', [KtpController::class, 'foto'])->name('ktp.foto');

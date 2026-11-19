@@ -2,7 +2,7 @@
 
 <x-layouts.penyewa title="Data KTP">
     <div class="p-4">
-        <a href="{{ route('penyewa.beranda') }}" class="text-sm text-muted">Kembali</a>
+        <a href="{{ route('penyewa.profil') }}" class="text-sm text-muted">Kembali</a>
         <h1 class="mt-3 text-[22px] font-extrabold tracking-tight">Data KTP</h1>
         <p class="mt-1 text-sm text-muted">Dipakai pengelola sebagai data identitas yang sah. Hanya kamu dan pengelola yang bisa melihatnya.</p>
 

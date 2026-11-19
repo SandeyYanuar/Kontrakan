@@ -6,7 +6,7 @@
             @session('status')
                 <p class="mb-5 rounded-[10px] border border-lunas/30 bg-lunas-bg px-4 py-3 text-sm font-semibold text-lunas" role="status">{{ $value }}</p>
             @endsession
-            <a href="{{ route('penyewa.beranda') }}" class="text-sm text-muted">Kembali</a>
+            <a href="{{ route('penyewa.profil') }}" class="text-sm text-muted">Kembali</a>
         @endif
 
         <x-judul>Ganti password</x-judul>

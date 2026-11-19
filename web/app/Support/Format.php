@@ -49,6 +49,14 @@ class Format
     }
 
     /**
+     * Format tanggal dan nama bulan tanpa tahun, misalnya "5 Desember".
+     */
+    public static function tanggalBulan(CarbonInterface $tanggal): string
+    {
+        return $tanggal->locale('id')->translatedFormat('j F');
+    }
+
+    /**
      * Format tanggal pendek tanpa tahun, misalnya "18 Nov".
      */
     public static function tanggalPendek(CarbonInterface $tanggal): string
