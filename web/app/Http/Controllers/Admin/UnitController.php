@@ -16,7 +16,7 @@ class UnitController extends Controller
 {
     public function index(): View
     {
-        return view('admin.unit.index', ['units' => Unit::query()->orderBy('kode_unit')->get()]);
+        return view('admin.unit.index', ['units' => Unit::query()->with('leaseAktif.penyewa')->orderBy('kode_unit')->get()]);
     }
 
     public function create(): View

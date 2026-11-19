@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\PengaturanController;
+use App\Http\Controllers\Admin\PenyewaController;
 use App\Http\Controllers\Admin\UnitController;
 use App\Http\Controllers\AkunController;
 use App\Http\Controllers\Auth\LoginController;
@@ -29,6 +30,14 @@ Route::middleware(['auth', 'peran:super_admin,admin'])->prefix('admin')->name('a
     Route::view('/tagihan', 'admin.tagihan')->name('tagihan');
     Route::get('/unit', [UnitController::class, 'index'])->name('unit.index');
 
+    Route::get('/penyewa', [PenyewaController::class, 'index'])->name('penyewa.index');
+    Route::get('/penyewa/tambah', [PenyewaController::class, 'create'])->name('penyewa.create');
+    Route::post('/penyewa', [PenyewaController::class, 'store'])->name('penyewa.store');
+    Route::get('/penyewa/{penyewa}/ubah', [PenyewaController::class, 'edit'])->name('penyewa.edit');
+    Route::put('/penyewa/{penyewa}', [PenyewaController::class, 'update'])->name('penyewa.update');
+    Route::get('/penyewa/{penyewa}/reset-password', [PenyewaController::class, 'editPassword'])->name('penyewa.reset-password.edit');
+    Route::patch('/penyewa/{penyewa}/reset-password', [PenyewaController::class, 'resetPassword'])->name('penyewa.reset-password');
+
     Route::middleware('can:super-admin')->group(function () {
         Route::get('/pengaturan', [PengaturanController::class, 'edit'])->name('pengaturan');
         Route::put('/pengaturan', [PengaturanController::class, 'update'])->name('pengaturan.update');
@@ -37,6 +46,11 @@ Route::middleware(['auth', 'peran:super_admin,admin'])->prefix('admin')->name('a
         Route::post('/unit', [UnitController::class, 'store'])->name('unit.store');
         Route::get('/unit/{unit}/ubah', [UnitController::class, 'edit'])->name('unit.edit');
         Route::put('/unit/{unit}', [UnitController::class, 'update'])->name('unit.update');
+
+        Route::get('/penyewa/{penyewa}/pindah', [PenyewaController::class, 'formPindah'])->name('penyewa.pindah.form');
+        Route::post('/penyewa/{penyewa}/pindah', [PenyewaController::class, 'pindah'])->name('penyewa.pindah');
+        Route::get('/penyewa/{penyewa}/akhiri', [PenyewaController::class, 'formAkhiri'])->name('penyewa.akhiri.form');
+        Route::post('/penyewa/{penyewa}/akhiri', [PenyewaController::class, 'akhiri'])->name('penyewa.akhiri');
 
         Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
         Route::get('/admin/tambah', [AdminController::class, 'create'])->name('admin.create');

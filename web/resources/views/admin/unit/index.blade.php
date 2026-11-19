@@ -26,6 +26,7 @@
                     <tr>
                         <th scope="col" class="px-4 py-3 font-semibold">Unit</th>
                         <th scope="col" class="px-4 py-3 font-semibold">Harga sewa per bulan</th>
+                        <th scope="col" class="px-4 py-3 font-semibold">Ditempati</th>
                         <th scope="col" class="px-4 py-3 font-semibold">Keterangan</th>
                         @can('super-admin')
                             <th scope="col" class="w-px px-4 py-3 font-semibold">Tindakan</th>
@@ -39,6 +40,14 @@
                                 <span class="inline-grid size-9 place-items-center rounded-lg bg-roof text-[13px] font-extrabold text-white">{{ $unit->kode_unit }}</span>
                             </td>
                             <td class="px-4 py-3.5 font-semibold">{{ \App\Support\Format::rupiah($unit->harga_sewa) }}</td>
+                            <td class="px-4 py-3.5">
+                                @if ($unit->leaseAktif)
+                                    {{ $unit->leaseAktif->penyewa->name }}
+                                    <span class="text-xs text-muted">{{ $unit->leaseAktif->penyewa->kode_penyewa }}</span>
+                                @else
+                                    <span class="text-muted">Kosong</span>
+                                @endif
+                            </td>
                             <td class="px-4 py-3.5 text-muted">{{ $unit->keterangan ?? '' }}</td>
                             @can('super-admin')
                                 <td class="px-4 py-3.5">

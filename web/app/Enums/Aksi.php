@@ -21,6 +21,12 @@ enum Aksi: string
 
     case PasswordDiganti = 'akun.password_diganti';
 
+    case PenyewaDitambah = 'penyewa.ditambah';
+    case PenyewaDiubah = 'penyewa.diubah';
+    case PasswordPenyewaDireset = 'penyewa.password_direset';
+    case PenyewaPindahUnit = 'penyewa.pindah_unit';
+    case SewaDiakhiri = 'penyewa.sewa_diakhiri';
+
     /**
      * Kalimat singkat untuk halaman riwayat aktivitas.
      */
@@ -36,6 +42,11 @@ enum Aksi: string
             self::AdminDiaktifkan => 'mengaktifkan kembali admin',
             self::PasswordAdminDireset => 'mereset password admin',
             self::PasswordDiganti => 'mengganti password sendiri',
+            self::PenyewaDitambah => 'menambah penyewa',
+            self::PenyewaDiubah => 'mengubah data penyewa',
+            self::PasswordPenyewaDireset => 'mereset password penyewa',
+            self::PenyewaPindahUnit => 'memindahkan penyewa ke unit lain',
+            self::SewaDiakhiri => 'mengakhiri sewa',
         };
     }
 }

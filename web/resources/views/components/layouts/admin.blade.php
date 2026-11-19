@@ -8,7 +8,7 @@
      */
     $menu = [
         ['kunci' => 'tagihan', 'label' => 'Tagihan', 'url' => route('admin.tagihan'), 'super_admin' => false],
-        ['kunci' => 'penyewa', 'label' => 'Penyewa', 'url' => '#', 'super_admin' => false],
+        ['kunci' => 'penyewa', 'label' => 'Penyewa', 'url' => route('admin.penyewa.index'), 'super_admin' => false],
         ['kunci' => 'unit', 'label' => 'Unit', 'url' => route('admin.unit.index'), 'super_admin' => false],
         ['kunci' => 'riwayat', 'label' => 'Riwayat aktivitas', 'url' => '#', 'super_admin' => false],
         ['kunci' => 'admin', 'label' => 'Admin', 'url' => route('admin.admin.index'), 'super_admin' => true],

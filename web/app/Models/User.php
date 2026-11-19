@@ -7,6 +7,8 @@ use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -44,6 +46,26 @@ class User extends Authenticatable
     public function isPenyewa(): bool
     {
         return $this->role === Peran::Penyewa;
+    }
+
+    /**
+     * Semua kontrak sewa penyewa ini, termasuk yang sudah selesai.
+     *
+     * @return HasMany<Lease, $this>
+     */
+    public function leases(): HasMany
+    {
+        return $this->hasMany(Lease::class);
+    }
+
+    /**
+     * Kontrak sewa yang sedang berjalan.
+     *
+     * @return HasOne<Lease, $this>
+     */
+    public function leaseAktif(): HasOne
+    {
+        return $this->hasOne(Lease::class)->where('status', Lease::AKTIF)->latestOfMany();
     }
 
     /**

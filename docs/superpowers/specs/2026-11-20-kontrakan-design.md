@@ -227,8 +227,8 @@ users              id, name, phone (unik, nomor WhatsApp, format 62xxx), email (
 tenant_identities  id, user_id, nik (terenkripsi), nama_ktp, foto_path (storage privat),
                    status(belum_ada|menunggu|sah|ditolak), alasan, verified_by, verified_at
 units              id, kode_unit (A1, B2…), harga_sewa, keterangan
-leases             id, user_id, unit_id, tgl_mulai, tgl_selesai (null),
-                   harga_sewa (salinan saat kontrak), status(aktif|selesai)
+leases             id, user_id, unit_id, tgl_mulai, tgl_selesai (null), status(aktif|selesai)
+                   — harga tidak disalin; tagihan memakai harga unit saat tagihan dibuat
 invoices           id, lease_id, periode (YYYY-MM), jatuh_tempo (date), total, status
 invoice_items      id, invoice_id, jenis(sewa|listrik|air|denda|lain), keterangan, nominal
 payments           id, invoice_id, file_path (storage privat), nominal_transfer, tgl_transfer,
