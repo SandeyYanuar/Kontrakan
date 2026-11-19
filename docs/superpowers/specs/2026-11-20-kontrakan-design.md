@@ -58,6 +58,7 @@ Akun tidak pernah dihapus, hanya dinonaktifkan, supaya nama di riwayat aktivitas
 - Pengiriman WhatsApp, SMS, atau OTP otomatis. Semua yang berbayar dihindari.
 - Tagihan listrik dan air per meteran. Ditunda, di luar harga sewa (lihat bagian 9).
 - Pendaftaran mandiri penyewa. Akun penyewa dibuat oleh admin.
+- Biaya booking penyewa baru. Penyewa baru membayar penuh satu bulan di muka di luar aplikasi (keputusan Pangeran, 20 November 2026).
 - Hosting. Untuk sekarang aplikasi hanya dijalankan di komputer Pangeran.
 
 **Anti-tujuan (gagal walaupun secara teknis jalan)**
@@ -196,6 +197,7 @@ Mengikuti alur dari Pangeran.
 ## 8. Aturan tagihan
 
 - **Siklus bulanan, periode bayar tanggal 27 bulan sebelumnya sampai tanggal 5** (diubah Pangeran, 20 November 2026). Contohnya, sewa Desember dibayar antara 27 November dan 5 Desember. Jatuh tempo adalah **tanggal 5** untuk semua kontrak, dan tidak diatur per penyewa. Kedua tanggal disimpan di Pengaturan. Kalau tanggal mulai lebih besar dari tanggal jatuh tempo, tanggal mulai dihitung di bulan sebelumnya.
+- **Tagihan rutin dimulai bulan setelah bulan mulai sewa.** Bulan saat penyewa masuk sudah dibayar lewat booking di luar aplikasi. Contohnya, penyewa yang masuk 10 Desember mendapat tagihan pertama untuk Januari, dibayar 27 Desember sampai 5 Januari.
 - **Tagihan dibuat otomatis 14 hari sebelum jatuh tempo** oleh penjadwal Laravel, untuk setiap kontrak aktif. Dengan begitu penyewa bisa membayar lebih awal. Admin juga bisa membuat tagihan bulan berikutnya secara manual, misalnya untuk penyewa yang mau membayar jauh di muka. Di lokal, penjadwal dijalankan dengan `php artisan schedule:work`, atau tagihan yang belum ada dibuat saat aplikasi dibuka.
 - **Satu bukti transfer untuk satu tagihan.** Membayar beberapa bulan sekaligus tidak didukung: penyewa mengupload bukti untuk setiap bulan.
 - **Nominal harus pas.** Kalau kurang, admin menolak dengan alasan, lalu penyewa mentransfer kekurangannya dan mengupload ulang. Tidak ada cicilan atau saldo. Kalau penyewa kelebihan bayar, admin tetap menyetujui dan menyelesaikan kelebihannya di luar aplikasi.
