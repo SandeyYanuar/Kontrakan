@@ -10,6 +10,7 @@ use App\Models\Pengaturan;
 use App\Rules\NomorHpIndonesia;
 use App\Services\PembuatTagihan;
 use App\Support\Aktivitas;
+use App\Support\AturanTunggakan;
 use App\Support\BarisTagihan;
 use App\Support\NomorHp;
 use Illuminate\Http\RedirectResponse;
@@ -50,6 +51,7 @@ class BerandaController extends Controller
             'lunasTerakhir' => $lunasTerakhir,
             'statusPintu' => $statusPintu,
             'pengaturan' => Pengaturan::semua(),
+            'lewatBatas' => AturanTunggakan::lewatBatas($terbuka),
             'adaYangHarusDibayar' => $terbuka->contains(fn (Invoice $invoice): bool => $invoice->bisaDibayar()),
             'linkPengelola' => $nomorAdmin
                 ? NomorHp::linkWhatsApp($nomorAdmin, "Halo, saya {$penyewa->name} ({$penyewa->kode_penyewa}) unit ".($lease?->unit->kode_unit ?? '-').'. ')

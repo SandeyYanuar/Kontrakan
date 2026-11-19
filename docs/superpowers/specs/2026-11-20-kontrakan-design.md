@@ -209,6 +209,12 @@ Mengikuti alur dari Pangeran.
   - Admin bisa memilih bulan untuk melihat tabel bulan-bulan sebelumnya.
   - Beranda penyewa menampilkan semua tagihan yang belum lunas, yang terlama di atas, dan upload bukti dilakukan per tagihan.
   - Pesan WhatsApp menyebut total tunggakan beserta rincian bulannya.
+- **Batas tunggakan 1 bulan** (keputusan Pangeran, 20 November 2026). Kalau ada lebih dari 1 tagihan yang belum dibayar dan sudah lewat jatuh tempo (bukti yang sedang dicek tidak dihitung):
+  - Di halaman Tagihan admin, penyewa itu ditaruh paling atas dengan tanda "Tunggakan lebih dari 1 bulan", dan pintunya berlabel "Lewat batas".
+  - Pesan pengingat WhatsApp ditambah kalimat "Tunggakan sudah melewati batas 1 bulan. Mohon segera dilunasi."
+  - Beranda penyewa menampilkan peringatan merah.
+  - Sewa tidak diakhiri otomatis; keputusan tetap di tangan Pangeran lewat tombol Akhiri sewa.
+- **Tagihan dibayar urut dari yang paling lama.** Bukti untuk satu bulan baru bisa diupload kalau bulan-bulan sebelumnya sudah lunas atau sedang dicek. Di beranda penyewa, kartu bulan berikutnya menampilkan "Lunasi tagihan Oktober 2026 dulu".
 - **Bulan berjalan** di tabel admin adalah bulan kalender hari ini. Tagihan bulan depan yang sudah dibuat lebih awal tampil di tabel bulan depan, tapi tagihan yang sudah dibayar lebih awal tetap tercatat di riwayat aktivitas.
 - **Status tagihan:**
   - `belum_bayar`

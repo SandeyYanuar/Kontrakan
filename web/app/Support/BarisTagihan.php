@@ -70,7 +70,15 @@ class BarisTagihan
 
     public function peringkat(): int
     {
-        return (int) array_search($this->status(), self::URUTAN, true);
+        return $this->lewatBatasTunggakan() ? -1 : (int) array_search($this->status(), self::URUTAN, true);
+    }
+
+    /**
+     * Lebih dari 1 bulan tagihan yang belum dibayar dan sudah lewat jatuh tempo.
+     */
+    public function lewatBatasTunggakan(): bool
+    {
+        return AturanTunggakan::lewatBatas($this->terbuka, $this->hariIni);
     }
 
     /**
@@ -145,6 +153,7 @@ class BarisTagihan
             .($sudahLewat
                 ? 'Jatuh temponya sudah lewat ('.Format::tanggal($jatuhTempo).").\n"
                 : 'Jatuh tempo '.Format::tanggal($jatuhTempo).".\n")
+            .($this->lewatBatasTunggakan() ? 'Tunggakan sudah melewati batas '.AturanTunggakan::BATAS_BULAN." bulan. Mohon segera dilunasi.\n" : '')
             ."Mohon tulis {$penyewa->kode_penyewa} di berita transfer, lalu upload buktinya di {$linkWeb}\n"
             .'Terima kasih.';
     }

@@ -7,6 +7,13 @@
         <p class="m-3 rounded-[10px] border border-lunas/30 bg-lunas-bg px-4 py-3 text-sm font-semibold text-lunas" role="status">{{ $value }}</p>
     @endsession
 
+    @if ($lewatBatas)
+        <div class="m-3 rounded-xl border-2 border-telat bg-telat-bg p-4" role="alert">
+            <p class="font-extrabold text-telat">Tunggakan sudah melewati batas {{ \App\Support\AturanTunggakan::BATAS_BULAN }} bulan</p>
+            <p class="mt-1 text-sm text-ink">Mohon segera lunasi, mulai dari tagihan yang paling lama. Kalau ada kendala, hubungi pengelola.</p>
+        </div>
+    @endif
+
     @if (in_array($penyewa->statusKtp(), ['belum_ada', 'ditolak'], true))
         <a href="{{ route('penyewa.ktp') }}" class="m-3 block rounded-xl border border-dekat/40 bg-dekat-bg p-4">
             <p class="font-bold text-dekat">Lengkapi data KTP</p>
@@ -17,7 +24,8 @@
     @endif
 
     @forelse ($terbuka as $invoice)
-        <x-penyewa.kartu-tagihan :invoice="$invoice" />
+        <x-penyewa.kartu-tagihan :invoice="$invoice"
+            :penghalang="$terbuka->first(fn ($lain) => $lain->periode < $invoice->periode && $lain->status->belumLunas())" />
     @empty
         @if ($lunasTerakhir)
             <article class="m-3 rounded-[14px] bg-lunas p-4 text-white">

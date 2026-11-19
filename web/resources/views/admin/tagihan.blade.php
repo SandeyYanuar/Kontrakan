@@ -15,6 +15,7 @@
     /** Teks pendek di bawah pintu. */
     $ketPintu = fn (?BarisTagihan $b): string => match (true) {
         $b === null => 'Kosong',
+        $b->lewatBatasTunggakan() => 'Lewat batas',
         $b->status() === Invoice::LABEL_LUNAS => 'Lunas',
         $b->status() === Invoice::LABEL_MENUNGGU => 'Perlu dicek',
         $b->status() === Invoice::LABEL_DITOLAK => 'Ditolak',
@@ -168,6 +169,9 @@
                                 </td>
                                 <td class="px-4 py-3.5">
                                     <span class="{{ WarnaStatus::label($b->status()) }} inline-block whitespace-nowrap rounded-full px-[11px] py-[5px] text-xs font-semibold">{{ $b->teksStatus() }}</span>
+                                    @if ($b->lewatBatasTunggakan())
+                                        <p class="mt-1.5 text-xs font-extrabold text-telat">Tunggakan lebih dari {{ \App\Support\AturanTunggakan::BATAS_BULAN }} bulan</p>
+                                    @endif
                                     @if ($b->tunggakan()->isNotEmpty())
                                         <p class="mt-1.5 text-xs text-telat">Termasuk tunggakan {{ $b->tunggakan()->map(fn ($i) => Format::bulan($i->periode))->implode(', ') }}</p>
                                     @endif
@@ -204,6 +208,9 @@
                                         <span class="{{ WarnaStatus::label($b->status()) }} whitespace-nowrap rounded-full px-2.5 py-1 text-xs font-semibold">{{ $b->teksStatus() }}</span>
                                     @endif
                                 </div>
+                                @if ($b->lewatBatasTunggakan())
+                                    <p class="mt-2 text-xs font-extrabold text-telat">Tunggakan lebih dari {{ \App\Support\AturanTunggakan::BATAS_BULAN }} bulan</p>
+                                @endif
                                 @if ($b->tunggakan()->isNotEmpty())
                                     <p class="mt-2 text-xs text-telat">Termasuk tunggakan {{ $b->tunggakan()->map(fn ($i) => Format::bulan($i->periode))->implode(', ') }}</p>
                                 @endif

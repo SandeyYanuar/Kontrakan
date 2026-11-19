@@ -1,4 +1,4 @@
-@props(['invoice'])
+@props(['invoice', 'penghalang' => null])
 
 @php
     use App\Models\Invoice;
@@ -52,7 +52,9 @@
         @endswitch
     </p>
 
-    @if ($invoice->bisaDibayar())
+    @if ($invoice->bisaDibayar() && $penghalang)
+        <p class="mt-3.5 rounded-[10px] bg-white/20 px-4 py-3 text-center text-sm font-semibold">Lunasi tagihan {{ Format::bulan($penghalang->periode) }} dulu</p>
+    @elseif ($invoice->bisaDibayar())
         <a href="{{ route('penyewa.bayar', $invoice) }}" class="{{ $warnaTombol }} mt-3.5 block w-full rounded-[10px] bg-white px-4 py-3 text-center text-sm font-bold">
             {{ $label === Invoice::LABEL_DITOLAK ? 'Upload ulang' : 'Upload bukti transfer' }}
         </a>

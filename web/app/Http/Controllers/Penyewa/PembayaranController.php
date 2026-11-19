@@ -9,6 +9,7 @@ use App\Models\Invoice;
 use App\Models\Payment;
 use App\Models\Pengaturan;
 use App\Support\Aktivitas;
+use App\Support\AturanTunggakan;
 use App\Support\Format;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -26,7 +27,7 @@ class PembayaranController extends Controller
     {
         $this->pastikanMilik($request, $invoice);
 
-        if (! $invoice->bisaDibayar()) {
+        if (! $invoice->bisaDibayar() || AturanTunggakan::penghalang($invoice)) {
             return redirect()->route('penyewa.beranda');
         }
 
@@ -39,6 +40,11 @@ class PembayaranController extends Controller
 
         if (! $invoice->bisaDibayar()) {
             return redirect()->route('penyewa.beranda')->with('status', 'Tagihan ini sudah lunas atau sedang dicek pengelola.');
+        }
+
+        if ($penghalang = AturanTunggakan::penghalang($invoice)) {
+            return redirect()->route('penyewa.beranda')
+                ->with('status', 'Lunasi tagihan '.Format::bulan($penghalang->periode).' dulu, baru tagihan ini bisa dibayar.');
         }
 
         $request->merge(['nominal_transfer' => Format::angka($request->input('nominal_transfer'))]);
