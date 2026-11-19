@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\PengaturanController;
 use App\Http\Controllers\Admin\PenyewaController;
+use App\Http\Controllers\Admin\TagihanController;
 use App\Http\Controllers\Admin\UnitController;
 use App\Http\Controllers\AkunController;
 use App\Http\Controllers\Auth\LoginController;
@@ -27,7 +28,8 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware(['auth', 'peran:super_admin,admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::view('/tagihan', 'admin.tagihan')->name('tagihan');
+    Route::get('/tagihan', [TagihanController::class, 'index'])->name('tagihan');
+    Route::post('/tagihan/{lease}/bulan-berikutnya', [TagihanController::class, 'buatBulanBerikutnya'])->name('tagihan.bulan-berikutnya');
     Route::get('/unit', [UnitController::class, 'index'])->name('unit.index');
 
     Route::get('/penyewa', [PenyewaController::class, 'index'])->name('penyewa.index');

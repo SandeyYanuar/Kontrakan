@@ -27,6 +27,8 @@ enum Aksi: string
     case PenyewaPindahUnit = 'penyewa.pindah_unit';
     case SewaDiakhiri = 'penyewa.sewa_diakhiri';
 
+    case TagihanDibuatManual = 'tagihan.dibuat_manual';
+
     /**
      * Kalimat singkat untuk halaman riwayat aktivitas.
      */
@@ -47,6 +49,7 @@ enum Aksi: string
             self::PasswordPenyewaDireset => 'mereset password penyewa',
             self::PenyewaPindahUnit => 'memindahkan penyewa ke unit lain',
             self::SewaDiakhiri => 'mengakhiri sewa',
+            self::TagihanDibuatManual => 'membuat tagihan lebih awal',
         };
     }
 }
