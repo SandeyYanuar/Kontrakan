@@ -28,6 +28,7 @@ enum Aksi: string
     case SewaDiakhiri = 'penyewa.sewa_diakhiri';
 
     case TagihanDibuatManual = 'tagihan.dibuat_manual';
+    case PengingatWhatsApp = 'tagihan.pengingat_whatsapp';
 
     /**
      * Kalimat singkat untuk halaman riwayat aktivitas.
@@ -50,6 +51,7 @@ enum Aksi: string
             self::PenyewaPindahUnit => 'memindahkan penyewa ke unit lain',
             self::SewaDiakhiri => 'mengakhiri sewa',
             self::TagihanDibuatManual => 'membuat tagihan lebih awal',
+            self::PengingatWhatsApp => 'membuka pengingat WhatsApp',
         };
     }
 }

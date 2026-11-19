@@ -29,6 +29,7 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware(['auth', 'peran:super_admin,admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/tagihan', [TagihanController::class, 'index'])->name('tagihan');
+    Route::post('/tagihan/{lease}/ingatkan', [TagihanController::class, 'ingatkan'])->name('tagihan.ingatkan');
     Route::post('/tagihan/{lease}/bulan-berikutnya', [TagihanController::class, 'buatBulanBerikutnya'])->name('tagihan.bulan-berikutnya');
     Route::get('/unit', [UnitController::class, 'index'])->name('unit.index');
 
