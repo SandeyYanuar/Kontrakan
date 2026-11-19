@@ -14,17 +14,15 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
+            $table->string('phone', 16)->unique()->comment('Nomor WhatsApp format 62xxx, dipakai untuk login');
+            $table->string('email')->nullable()->comment('Opsional, hanya data kontak');
             $table->string('password');
+            $table->string('role', 20)->index();
+            $table->boolean('is_active')->default(true);
+            $table->string('kode_penyewa', 10)->nullable()->unique()->comment('KT-0001, hanya untuk penyewa');
+            $table->string('phone_darurat', 16)->nullable();
             $table->rememberToken();
             $table->timestamps();
-        });
-
-        Schema::create('password_reset_tokens', function (Blueprint $table) {
-            $table->string('email')->primary();
-            $table->string('token');
-            $table->timestamp('created_at')->nullable();
         });
 
         Schema::create('sessions', function (Blueprint $table) {
@@ -43,7 +41,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('users');
-        Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
     }
 };

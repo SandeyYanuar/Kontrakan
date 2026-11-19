@@ -2,7 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Enums\Peran;
 use App\Models\User;
+use App\Support\NomorHp;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -12,14 +14,20 @@ class DatabaseSeeder extends Seeder
 
     /**
      * Seed the application's database.
+     *
+     * Membuat akun super admin pertama dari config/kontrakan.php
+     * (SUPER_ADMIN_PHONE dan SUPER_ADMIN_PASSWORD di .env).
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        User::updateOrCreate(
+            ['phone' => NomorHp::normalisasi(config('kontrakan.super_admin.phone'))],
+            [
+                'name' => config('kontrakan.super_admin.name'),
+                'password' => config('kontrakan.super_admin.password'),
+                'role' => Peran::SuperAdmin,
+                'is_active' => true,
+            ],
+        );
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\Peran;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
@@ -26,20 +27,32 @@ class UserFactory extends Factory
     {
         return [
             'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
+            'phone' => '628'.fake()->unique()->numerify('##########'),
+            'email' => null,
             'password' => static::$password ??= Hash::make('password'),
+            'role' => Peran::Penyewa,
+            'is_active' => true,
             'remember_token' => Str::random(10),
         ];
     }
 
-    /**
-     * Indicate that the model's email address should be unverified.
-     */
-    public function unverified(): static
+    public function superAdmin(): static
     {
-        return $this->state(fn (array $attributes) => [
-            'email_verified_at' => null,
-        ]);
+        return $this->state(fn (array $attributes) => ['role' => Peran::SuperAdmin]);
+    }
+
+    public function admin(): static
+    {
+        return $this->state(fn (array $attributes) => ['role' => Peran::Admin]);
+    }
+
+    public function penyewa(): static
+    {
+        return $this->state(fn (array $attributes) => ['role' => Peran::Penyewa]);
+    }
+
+    public function nonaktif(): static
+    {
+        return $this->state(fn (array $attributes) => ['is_active' => false]);
     }
 }
