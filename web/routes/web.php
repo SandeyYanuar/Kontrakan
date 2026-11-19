@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\KtpPenyewaController;
 use App\Http\Controllers\Admin\PembayaranController as AdminPembayaranController;
 use App\Http\Controllers\Admin\PengaturanController;
 use App\Http\Controllers\Admin\PenyewaController;
+use App\Http\Controllers\Admin\RiwayatController;
 use App\Http\Controllers\Admin\TagihanController;
 use App\Http\Controllers\Admin\UnitController;
 use App\Http\Controllers\AkunController;
@@ -40,6 +41,7 @@ Route::middleware(['auth', 'peran:super_admin,admin'])->prefix('admin')->name('a
     Route::post('/pembayaran/{payment}/tolak', [AdminPembayaranController::class, 'tolak'])->name('pembayaran.tolak');
     Route::post('/tagihan/{lease}/bulan-berikutnya', [TagihanController::class, 'buatBulanBerikutnya'])->name('tagihan.bulan-berikutnya');
     Route::get('/unit', [UnitController::class, 'index'])->name('unit.index');
+    Route::get('/riwayat', [RiwayatController::class, 'index'])->name('riwayat');
 
     Route::get('/penyewa', [PenyewaController::class, 'index'])->name('penyewa.index');
     Route::get('/penyewa/tambah', [PenyewaController::class, 'create'])->name('penyewa.create');

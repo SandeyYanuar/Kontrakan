@@ -63,7 +63,7 @@ class PembayaranController extends Controller
         $path = $request->file('bukti')->store('bukti/'.$penyewa->id, 'local');
 
         DB::transaction(function () use ($invoice, $penyewa, $path, $data): void {
-            $invoice->payments()->create([
+            $payment = $invoice->payments()->create([
                 'user_id' => $penyewa->id,
                 'file_path' => $path,
                 'nominal_transfer' => (int) $data['nominal_transfer'],
@@ -75,7 +75,7 @@ class PembayaranController extends Controller
 
             $invoice->update(['status' => StatusTagihan::Menunggu]);
 
-            Aktivitas::catat(Aksi::BuktiDiupload, $invoice, [
+            Aktivitas::catat(Aksi::BuktiDiupload, $payment, [
                 'kode_penyewa' => $penyewa->kode_penyewa,
                 'unit' => $invoice->lease->unit->kode_unit,
                 'periode' => $invoice->periode,

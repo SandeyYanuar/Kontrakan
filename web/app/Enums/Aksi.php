@@ -76,4 +76,46 @@ enum Aksi: string
             self::KtpDihapus => 'menghapus foto KTP',
         };
     }
+
+    /**
+     * Kelompok untuk filter jenis aktivitas dan ikon di halaman riwayat.
+     */
+    public function kategori(): string
+    {
+        return match ($this) {
+            self::PembayaranDisetujui => 'disetujui',
+            self::PembayaranDitolak, self::PersetujuanDibatalkan => 'ditolak',
+            self::PengingatWhatsApp => 'pengingat',
+            self::BuktiDiupload => 'bukti',
+            self::KtpDiupload, self::KtpDilihat, self::KtpDisahkan, self::KtpDitolak, self::KtpDihapus => 'ktp',
+            self::PenyewaDitambah, self::PenyewaDiubah, self::PasswordPenyewaDireset, self::PenyewaPindahUnit, self::SewaDiakhiri, self::TagihanDibuatManual => 'penyewa',
+            default => 'pengaturan',
+        };
+    }
+
+    /**
+     * Pilihan filter jenis aktivitas.
+     *
+     * @return array<string, string>
+     */
+    public static function pilihanKategori(): array
+    {
+        return [
+            'disetujui' => 'Disetujui',
+            'ditolak' => 'Ditolak atau dibatalkan',
+            'pengingat' => 'Pengingat WhatsApp',
+            'bukti' => 'Bukti diupload',
+            'ktp' => 'KTP',
+            'penyewa' => 'Penyewa dan tagihan',
+            'pengaturan' => 'Unit, admin, dan pengaturan',
+        ];
+    }
+
+    /**
+     * @return list<self>
+     */
+    public static function dalamKategori(string $kategori): array
+    {
+        return array_values(array_filter(self::cases(), fn (self $aksi): bool => $aksi->kategori() === $kategori));
+    }
 }
