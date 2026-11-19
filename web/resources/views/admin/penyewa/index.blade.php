@@ -12,7 +12,33 @@
             <p class="mt-1 text-sm text-muted">Tambahkan penyewa dan pilih unit kosong yang ditempatinya.</p>
         </div>
     @else
-        <div class="overflow-x-auto rounded-2xl border border-line bg-paper">
+        {{-- HP: kartu. --}}
+        <div class="space-y-2.5 md:hidden">
+            @foreach ($penyewa as $orang)
+                @php($lease = $orang->leaseAktif)
+                @php($ktp = $orang->statusKtp())
+                <a href="{{ route('admin.penyewa.show', $orang) }}" @class(['flex items-center gap-3 rounded-xl border border-line bg-paper p-3.5', 'opacity-70' => ! $orang->is_active])>
+                    <span @class([
+                        'grid size-[38px] shrink-0 place-items-center rounded-lg text-[13px] font-extrabold',
+                        'bg-roof text-white' => $lease,
+                        'border border-dashed border-[#aeb7c2] text-muted' => ! $lease,
+                    ])>{{ $lease?->unit->kode_unit ?? '–' }}</span>
+                    <span class="min-w-0 flex-1">
+                        <span class="block truncate font-semibold">{{ $orang->name }}</span>
+                        <span class="block text-xs text-muted">{{ $orang->kode_penyewa }}, {{ $orang->is_active ? \App\Support\NomorHp::tampil($orang->phone) : 'sudah keluar' }}</span>
+                    </span>
+                    <span @class([
+                        'shrink-0 whitespace-nowrap rounded-full px-2.5 py-1 text-[11px] font-semibold',
+                        'bg-lunas-bg text-lunas' => $ktp === 'sah',
+                        'bg-dicek-bg text-dicek' => $ktp === 'menunggu',
+                        'bg-telat-bg text-telat' => $ktp === 'ditolak',
+                        'bg-soft text-muted' => $ktp === 'belum_ada',
+                    ])>{{ match ($ktp) { 'sah' => 'KTP sah', 'menunggu' => 'KTP dicek', 'ditolak' => 'KTP ulang', default => 'Tanpa KTP' } }}</span>
+                </a>
+            @endforeach
+        </div>
+
+        <div class="hidden overflow-x-auto rounded-2xl border border-line bg-paper md:block">
             <table class="w-full text-left text-sm">
                 <thead class="border-b border-line bg-soft text-[13px] text-muted">
                     <tr>

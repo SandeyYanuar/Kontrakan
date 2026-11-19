@@ -6,7 +6,40 @@
         </x-slot:aksi>
     </x-judul>
 
-    <div class="overflow-x-auto rounded-2xl border border-line bg-paper">
+    {{-- HP: kartu. --}}
+    <div class="space-y-2.5 md:hidden">
+        @foreach ($pengelola as $orang)
+            <div @class(['rounded-xl border border-line bg-paper p-3.5', 'opacity-70' => ! $orang->is_active])>
+                <div class="flex items-center justify-between gap-3">
+                    <div class="min-w-0">
+                        <p class="truncate font-semibold">{{ $orang->name }}</p>
+                        <p class="text-xs text-muted">{{ $orang->role->label() }}, {{ \App\Support\NomorHp::tampil($orang->phone) }}</p>
+                    </div>
+                    <span @class(['shrink-0 rounded-full px-2.5 py-1 text-xs font-semibold', 'bg-lunas-bg text-lunas' => $orang->is_active, 'bg-soft text-muted' => ! $orang->is_active])>{{ $orang->is_active ? 'Aktif' : 'Nonaktif' }}</span>
+                </div>
+                @if ($orang->role === \App\Enums\Peran::Admin)
+                    <div class="mt-3 flex flex-wrap gap-2">
+                        @if ($orang->is_active)
+                            <x-tombol jenis="sekunder" :href="route('admin.admin.reset-password.edit', $orang)">Reset password</x-tombol>
+                            <form method="POST" action="{{ route('admin.admin.nonaktifkan', $orang) }}" onsubmit="return confirm('Nonaktifkan {{ $orang->name }}? Akun ini tidak bisa login sampai diaktifkan kembali.')">
+                                @csrf
+                                @method('PATCH')
+                                <x-tombol jenis="bahaya">Nonaktifkan</x-tombol>
+                            </form>
+                        @else
+                            <form method="POST" action="{{ route('admin.admin.aktifkan', $orang) }}">
+                                @csrf
+                                @method('PATCH')
+                                <x-tombol jenis="sekunder">Aktifkan kembali</x-tombol>
+                            </form>
+                        @endif
+                    </div>
+                @endif
+            </div>
+        @endforeach
+    </div>
+
+    <div class="hidden overflow-x-auto rounded-2xl border border-line bg-paper md:block">
         <table class="w-full text-left text-sm">
             <thead class="border-b border-line bg-soft text-[13px] text-muted">
                 <tr>

@@ -20,7 +20,25 @@
             </p>
         </div>
     @else
-        <div class="overflow-x-auto rounded-2xl border border-line bg-paper">
+        {{-- HP: kartu. --}}
+        <div class="space-y-2.5 md:hidden">
+            @foreach ($units as $unit)
+                <div class="flex items-center gap-3 rounded-xl border border-line bg-paper p-3.5">
+                    <span class="grid size-[38px] shrink-0 place-items-center rounded-lg bg-roof text-[13px] font-extrabold text-white">{{ $unit->kode_unit }}</span>
+                    <span class="min-w-0 flex-1">
+                        <span class="block font-semibold">{{ \App\Support\Format::rupiah($unit->harga_sewa) }} <span class="text-xs font-normal text-muted">per bulan</span></span>
+                        <span class="block truncate text-xs text-muted">
+                            {{ $unit->leaseAktif ? $unit->leaseAktif->penyewa->name.' ('.$unit->leaseAktif->penyewa->kode_penyewa.')' : 'Kosong' }}{{ $unit->keterangan ? ', '.$unit->keterangan : '' }}
+                        </span>
+                    </span>
+                    @can('super-admin')
+                        <x-tombol jenis="sekunder" :href="route('admin.unit.edit', $unit)">Ubah</x-tombol>
+                    @endcan
+                </div>
+            @endforeach
+        </div>
+
+        <div class="hidden overflow-x-auto rounded-2xl border border-line bg-paper md:block">
             <table class="w-full text-left text-sm">
                 <thead class="border-b border-line bg-soft text-[13px] text-muted">
                     <tr>
