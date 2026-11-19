@@ -14,6 +14,15 @@
         <div class="teras h-2"></div>
     </header>
 
+    @if (in_array(auth()->user()->statusKtp(), ['belum_ada', 'ditolak'], true))
+        <a href="{{ route('penyewa.ktp') }}" class="m-3 block rounded-xl border border-dekat/40 bg-dekat-bg p-4">
+            <p class="font-bold text-dekat">Lengkapi data KTP</p>
+            <p class="mt-1 text-sm text-ink">
+                {{ auth()->user()->statusKtp() === 'ditolak' ? 'Pengelola meminta KTP diupload ulang.' : 'Upload foto KTP sebagai data identitas yang sah.' }}
+            </p>
+        </a>
+    @endif
+
     <div class="m-3 rounded-xl border border-line bg-paper p-4">
         <p class="font-semibold">Belum ada tagihan</p>
         <p class="mt-1 text-sm text-muted">Tagihan sewa akan muncul di sini setelah pengelola mendaftarkan unit kamu.</p>

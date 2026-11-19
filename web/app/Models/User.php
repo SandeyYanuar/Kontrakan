@@ -69,6 +69,24 @@ class User extends Authenticatable
     }
 
     /**
+     * Data KTP (hanya penyewa).
+     *
+     * @return HasOne<TenantIdentity, $this>
+     */
+    public function identitas(): HasOne
+    {
+        return $this->hasOne(TenantIdentity::class);
+    }
+
+    /**
+     * Status KTP penyewa, "belum_ada" kalau belum pernah upload.
+     */
+    public function statusKtp(): string
+    {
+        return $this->identitas?->status ?? TenantIdentity::BELUM_ADA;
+    }
+
+    /**
      * Halaman pertama setelah login, sesuai peran.
      */
     public function halamanAwal(): string

@@ -30,6 +30,12 @@ enum Aksi: string
     case TagihanDibuatManual = 'tagihan.dibuat_manual';
     case PengingatWhatsApp = 'tagihan.pengingat_whatsapp';
 
+    case KtpDiupload = 'ktp.diupload';
+    case KtpDilihat = 'ktp.dilihat';
+    case KtpDisahkan = 'ktp.disahkan';
+    case KtpDitolak = 'ktp.ditolak';
+    case KtpDihapus = 'ktp.dihapus';
+
     /**
      * Kalimat singkat untuk halaman riwayat aktivitas.
      */
@@ -52,6 +58,11 @@ enum Aksi: string
             self::SewaDiakhiri => 'mengakhiri sewa',
             self::TagihanDibuatManual => 'membuat tagihan lebih awal',
             self::PengingatWhatsApp => 'membuka pengingat WhatsApp',
+            self::KtpDiupload => 'mengupload KTP',
+            self::KtpDilihat => 'membuka foto KTP',
+            self::KtpDisahkan => 'menandai KTP sah',
+            self::KtpDitolak => 'meminta upload ulang KTP',
+            self::KtpDihapus => 'menghapus foto KTP',
         };
     }
 }

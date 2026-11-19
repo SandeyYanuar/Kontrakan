@@ -29,6 +29,18 @@ class Format
     }
 
     /**
+     * NIK tersamar: 3 digit depan dan 3 digit belakang terlihat, misalnya "320••••••••••004".
+     */
+    public static function nikTersamar(?string $nik): string
+    {
+        if ($nik === null || strlen($nik) < 7) {
+            return '';
+        }
+
+        return substr($nik, 0, 3).str_repeat('•', strlen($nik) - 6).substr($nik, -3);
+    }
+
+    /**
      * Format tanggal lengkap, misalnya "5 Desember 2026".
      */
     public static function tanggal(CarbonInterface $tanggal): string

@@ -1,12 +1,14 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\KtpPenyewaController;
 use App\Http\Controllers\Admin\PengaturanController;
 use App\Http\Controllers\Admin\PenyewaController;
 use App\Http\Controllers\Admin\TagihanController;
 use App\Http\Controllers\Admin\UnitController;
 use App\Http\Controllers\AkunController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Penyewa\KtpController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', fn () => auth()->check()
@@ -40,6 +42,10 @@ Route::middleware(['auth', 'peran:super_admin,admin'])->prefix('admin')->name('a
     Route::put('/penyewa/{penyewa}', [PenyewaController::class, 'update'])->name('penyewa.update');
     Route::get('/penyewa/{penyewa}/reset-password', [PenyewaController::class, 'editPassword'])->name('penyewa.reset-password.edit');
     Route::patch('/penyewa/{penyewa}/reset-password', [PenyewaController::class, 'resetPassword'])->name('penyewa.reset-password');
+    Route::get('/penyewa/{penyewa}', [KtpPenyewaController::class, 'show'])->name('penyewa.show');
+    Route::get('/penyewa/{penyewa}/ktp/foto', [KtpPenyewaController::class, 'foto'])->name('penyewa.ktp.foto');
+    Route::post('/penyewa/{penyewa}/ktp/sah', [KtpPenyewaController::class, 'sahkan'])->name('penyewa.ktp.sah');
+    Route::post('/penyewa/{penyewa}/ktp/tolak', [KtpPenyewaController::class, 'tolak'])->name('penyewa.ktp.tolak');
 
     Route::middleware('can:super-admin')->group(function () {
         Route::get('/pengaturan', [PengaturanController::class, 'edit'])->name('pengaturan');
@@ -54,6 +60,7 @@ Route::middleware(['auth', 'peran:super_admin,admin'])->prefix('admin')->name('a
         Route::post('/penyewa/{penyewa}/pindah', [PenyewaController::class, 'pindah'])->name('penyewa.pindah');
         Route::get('/penyewa/{penyewa}/akhiri', [PenyewaController::class, 'formAkhiri'])->name('penyewa.akhiri.form');
         Route::post('/penyewa/{penyewa}/akhiri', [PenyewaController::class, 'akhiri'])->name('penyewa.akhiri');
+        Route::delete('/penyewa/{penyewa}/ktp/foto', [KtpPenyewaController::class, 'hapus'])->name('penyewa.ktp.hapus');
 
         Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
         Route::get('/admin/tambah', [AdminController::class, 'create'])->name('admin.create');
@@ -67,4 +74,7 @@ Route::middleware(['auth', 'peran:super_admin,admin'])->prefix('admin')->name('a
 
 Route::middleware(['auth', 'peran:tenant'])->name('penyewa.')->group(function () {
     Route::view('/beranda', 'penyewa.beranda')->name('beranda');
+    Route::get('/profil/ktp', [KtpController::class, 'edit'])->name('ktp');
+    Route::post('/profil/ktp', [KtpController::class, 'simpan'])->name('ktp.simpan');
+    Route::get('/profil/ktp/foto', [KtpController::class, 'foto'])->name('ktp.foto');
 });

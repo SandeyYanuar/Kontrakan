@@ -18,6 +18,7 @@
                     <tr>
                         <th scope="col" class="px-4 py-3 font-semibold">Penyewa</th>
                         <th scope="col" class="px-4 py-3 font-semibold">Mulai sewa</th>
+                        <th scope="col" class="px-4 py-3 font-semibold">KTP</th>
                         <th scope="col" class="px-4 py-3 font-semibold">Status</th>
                         <th scope="col" class="w-px px-4 py-3 font-semibold">Tindakan</th>
                     </tr>
@@ -35,14 +36,24 @@
                                     ])>{{ $lease?->unit->kode_unit ?? '–' }}</span>
                                     <div>
                                         <p class="font-semibold text-ink">
-                                            {{ $orang->name }}
-                                            <span class="ml-1.5 rounded-[5px] bg-[#e4e8ed] px-1.5 py-px align-[1px] text-[11px] font-bold tracking-wide text-roof">{{ $orang->kode_penyewa }}</span>
+                                            <a href="{{ route('admin.penyewa.show', $orang) }}" class="underline-offset-2 hover:underline">{{ $orang->name }}</a>
+                                            <span class="ml-1.5 whitespace-nowrap rounded-[5px] bg-[#e4e8ed] px-1.5 py-px align-[1px] text-[11px] font-bold tracking-wide text-roof">{{ $orang->kode_penyewa }}</span>
                                         </p>
                                         <p class="mt-0.5 text-xs text-muted">{{ \App\Support\NomorHp::tampil($orang->phone) }}</p>
                                     </div>
                                 </div>
                             </td>
-                            <td class="px-4 py-3.5">{{ $lease ? \App\Support\Format::tanggal($lease->tgl_mulai) : '' }}</td>
+                            <td class="whitespace-nowrap px-4 py-3.5">{{ $lease ? \App\Support\Format::tanggal($lease->tgl_mulai) : '' }}</td>
+                            <td class="px-4 py-3.5">
+                                @php($ktp = $orang->statusKtp())
+                                <a href="{{ route('admin.penyewa.show', $orang) }}" @class([
+                                    'inline-block whitespace-nowrap rounded-full px-2.5 py-1 text-xs font-semibold',
+                                    'bg-lunas-bg text-lunas' => $ktp === 'sah',
+                                    'bg-dicek-bg text-dicek' => $ktp === 'menunggu',
+                                    'bg-telat-bg text-telat' => $ktp === 'ditolak',
+                                    'bg-soft text-muted' => $ktp === 'belum_ada',
+                                ])>{{ match ($ktp) { 'sah' => 'KTP sah', 'menunggu' => 'KTP menunggu dicek', 'ditolak' => 'KTP perlu upload ulang', default => 'KTP belum ada' } }}</a>
+                            </td>
                             <td class="px-4 py-3.5">
                                 @if ($orang->is_active)
                                     <span class="rounded-full bg-lunas-bg px-2.5 py-1 text-xs font-semibold text-lunas">Menyewa</span>
@@ -52,16 +63,9 @@
                             </td>
                             <td class="px-4 py-3.5">
                                 @if ($orang->is_active)
-                                    <div class="flex gap-2">
-                                        <x-tombol jenis="sekunder" :href="route('admin.penyewa.edit', $orang)">Ubah</x-tombol>
-                                        <x-tombol jenis="sekunder" :href="route('admin.penyewa.reset-password.edit', $orang)">Reset password</x-tombol>
-                                        @can('super-admin')
-                                            @if ($lease)
-                                                <x-tombol jenis="sekunder" :href="route('admin.penyewa.pindah.form', $orang)">Pindah unit</x-tombol>
-                                                <x-tombol jenis="bahaya" :href="route('admin.penyewa.akhiri.form', $orang)">Akhiri sewa</x-tombol>
-                                            @endif
-                                        @endcan
-                                    </div>
+                                    <x-tombol jenis="sekunder" :href="route('admin.penyewa.show', $orang)">Detail</x-tombol>
+                                @else
+                                    <x-tombol jenis="tenang" :href="route('admin.penyewa.show', $orang)">Detail</x-tombol>
                                 @endif
                             </td>
                         </tr>

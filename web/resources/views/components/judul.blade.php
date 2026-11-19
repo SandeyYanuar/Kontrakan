@@ -9,6 +9,6 @@
         @endif
     </div>
     @isset($aksi)
-        <div class="flex gap-2">{{ $aksi }}</div>
+        <div class="flex flex-wrap gap-2">{{ $aksi }}</div>
     @endisset
 </div>

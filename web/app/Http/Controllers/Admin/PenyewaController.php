@@ -30,7 +30,7 @@ class PenyewaController extends Controller
     {
         $penyewa = User::query()
             ->where('role', Peran::Penyewa)
-            ->with('leaseAktif.unit')
+            ->with('leaseAktif.unit', 'identitas')
             ->orderByDesc('is_active')
             ->orderBy('kode_penyewa')
             ->get();

@@ -23,3 +23,8 @@ test('tanggal pendek memakai singkatan bulan', function () {
 test('bulan menerima periode YYYY-MM', function () {
     expect(Format::bulan('2026-02'))->toBe('Februari 2026');
 });
+
+test('NIK tersamar menampilkan 3 digit depan dan 3 digit belakang', function () {
+    expect(Format::nikTersamar('3201234567890004'))->toBe('320••••••••••004')
+        ->and(Format::nikTersamar(null))->toBe('');
+});
