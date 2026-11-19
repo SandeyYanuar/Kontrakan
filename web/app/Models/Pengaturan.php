@@ -25,7 +25,7 @@ class Pengaturan extends Model
         'bank_nomor' => null,
         'bank_atas_nama' => null,
         'whatsapp_admin' => null,
-        'tanggal_mulai_bayar' => '1',
+        'tanggal_mulai_bayar' => '27',
         'tanggal_jatuh_tempo' => '5',
     ];
 
@@ -56,6 +56,20 @@ class Pengaturan extends Model
         foreach (array_intersect_key($nilai, static::BAWAAN) as $kunci => $isi) {
             static::query()->updateOrCreate(['kunci' => $kunci], ['nilai' => $isi]);
         }
+    }
+
+    /**
+     * Periode bayar dalam kalimat, misalnya "27 bulan sebelumnya sampai 5".
+     * Kalau tanggal mulai lebih besar dari jatuh tempo, tanggal mulai jatuh di bulan sebelumnya.
+     */
+    public static function keteranganPeriodeBayar(): string
+    {
+        $mulai = (int) static::ambil('tanggal_mulai_bayar');
+        $jatuhTempo = (int) static::ambil('tanggal_jatuh_tempo');
+
+        return $mulai > $jatuhTempo
+            ? "{$mulai} bulan sebelumnya sampai {$jatuhTempo}"
+            : "{$mulai} sampai {$jatuhTempo}";
     }
 
     /**

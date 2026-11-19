@@ -32,10 +32,10 @@
         <section class="space-y-4 rounded-2xl border border-line bg-paper p-6">
             <div>
                 <h2 class="text-lg font-bold">Periode bayar</h2>
-                <p class="mt-1 text-sm text-muted">Selama periode ini tagihan yang belum lunas berstatus jatuh tempo dekat. Sehari setelahnya berstatus telat.</p>
+                <p class="mt-1 text-sm text-muted">Sekarang: tanggal {{ \App\Models\Pengaturan::keteranganPeriodeBayar() }}. Selama periode ini tagihan yang belum lunas berstatus jatuh tempo dekat, dan sehari setelah jatuh tempo berstatus telat. Kalau tanggal mulai lebih besar dari jatuh tempo, tanggal mulai dihitung di bulan sebelumnya.</p>
             </div>
             <div class="grid gap-4 sm:grid-cols-2">
-                <x-field label="Mulai bayar tanggal" name="tanggal_mulai_bayar" type="number" min="1" max="28" :value="$pengaturan['tanggal_mulai_bayar']" required />
+                <x-field label="Mulai bayar tanggal" name="tanggal_mulai_bayar" type="number" min="1" max="28" :value="$pengaturan['tanggal_mulai_bayar']" hint="Contoh: 27 berarti mulai tanggal 27 bulan sebelumnya." required />
                 <x-field label="Jatuh tempo tanggal" name="tanggal_jatuh_tempo" type="number" min="1" max="28" :value="$pengaturan['tanggal_jatuh_tempo']" required />
             </div>
         </section>

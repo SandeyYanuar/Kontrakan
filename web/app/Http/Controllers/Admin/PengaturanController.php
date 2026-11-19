@@ -28,13 +28,13 @@ class PengaturanController extends Controller
             'bank_atas_nama' => ['nullable', 'string', 'max:60'],
             'whatsapp_admin' => ['nullable', new NomorHpIndonesia],
             'tanggal_mulai_bayar' => ['required', 'integer', 'between:1,28'],
-            'tanggal_jatuh_tempo' => ['required', 'integer', 'between:1,28', 'gte:tanggal_mulai_bayar'],
+            'tanggal_jatuh_tempo' => ['required', 'integer', 'between:1,28', 'different:tanggal_mulai_bayar'],
         ], [
             'nama_kontrakan.required' => 'Nama kontrakan wajib diisi.',
             'bank_nomor.regex' => 'Nomor rekening hanya boleh berisi angka, spasi, atau strip.',
             'tanggal_mulai_bayar.between' => 'Tanggal harus antara 1 dan 28.',
             'tanggal_jatuh_tempo.between' => 'Tanggal harus antara 1 dan 28.',
-            'tanggal_jatuh_tempo.gte' => 'Jatuh tempo tidak boleh sebelum tanggal mulai bayar.',
+            'tanggal_jatuh_tempo.different' => 'Jatuh tempo harus berbeda dari tanggal mulai bayar.',
         ]);
 
         $data['whatsapp_admin'] = $data['whatsapp_admin'] ? NomorHp::normalisasi($data['whatsapp_admin']) : null;

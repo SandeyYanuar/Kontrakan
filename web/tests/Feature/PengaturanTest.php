@@ -13,14 +13,14 @@ function dataPengaturanSah(array $ubah = []): array
         'bank_nomor' => '1234 5678 4821',
         'bank_atas_nama' => 'Pangeran G. K.',
         'whatsapp_admin' => '0812-0000-0001',
-        'tanggal_mulai_bayar' => '1',
+        'tanggal_mulai_bayar' => '27',
         'tanggal_jatuh_tempo' => '5',
     ], $ubah);
 }
 
 test('pengaturan punya nilai bawaan sebelum diisi', function () {
     expect(Pengaturan::ambil('nama_kontrakan'))->toBe('Kontrakan')
-        ->and(Pengaturan::ambil('tanggal_mulai_bayar'))->toBe('1')
+        ->and(Pengaturan::ambil('tanggal_mulai_bayar'))->toBe('27')
         ->and(Pengaturan::ambil('tanggal_jatuh_tempo'))->toBe('5')
         ->and(Pengaturan::ambil('bank_nomor'))->toBeNull();
 });
@@ -61,7 +61,7 @@ test('isian pengaturan divalidasi', function (array $ubah, string $kolom) {
     'nama kosong' => [['nama_kontrakan' => ''], 'nama_kontrakan'],
     'nomor WhatsApp bukan 08/62' => [['whatsapp_admin' => '1234567890'], 'whatsapp_admin'],
     'tanggal mulai di luar 1-28' => [['tanggal_mulai_bayar' => '29'], 'tanggal_mulai_bayar'],
-    'jatuh tempo sebelum tanggal mulai' => [['tanggal_mulai_bayar' => '5', 'tanggal_jatuh_tempo' => '3'], 'tanggal_jatuh_tempo'],
+    'jatuh tempo sama dengan tanggal mulai' => [['tanggal_mulai_bayar' => '5', 'tanggal_jatuh_tempo' => '5'], 'tanggal_jatuh_tempo'],
 ]);
 
 test('admin biasa tidak bisa mengubah pengaturan', function () {
@@ -83,4 +83,15 @@ test('nama kontrakan dari pengaturan tampil di halaman login', function () {
     Pengaturan::simpan(['nama_kontrakan' => 'Kontrakan Gunung Kawi']);
 
     $this->get(route('login'))->assertSee('Kontrakan Gunung Kawi');
+});
+
+test('periode bayar boleh melewati pergantian bulan', function () {
+    $this->actingAs(User::factory()->superAdmin()->create())
+        ->put(route('admin.pengaturan.update'), dataPengaturanSah(['tanggal_mulai_bayar' => '27', 'tanggal_jatuh_tempo' => '5']))
+        ->assertSessionHasNoErrors();
+
+    expect(Pengaturan::keteranganPeriodeBayar())->toBe('27 bulan sebelumnya sampai 5');
+
+    Pengaturan::simpan(['tanggal_mulai_bayar' => '1', 'tanggal_jatuh_tempo' => '5']);
+    expect(Pengaturan::keteranganPeriodeBayar())->toBe('1 sampai 5');
 });

@@ -195,7 +195,7 @@ Mengikuti alur dari Pangeran.
 
 ## 8. Aturan tagihan
 
-- **Siklus bulanan, periode bayar tanggal 1–5.** Semua penyewa membayar sewa bulan berjalan antara tanggal 1 dan 5. Jatuh tempo adalah **tanggal 5** untuk semua kontrak, dan tidak diatur per penyewa. Tanggal 1 dan 5 disimpan di Pengaturan.
+- **Siklus bulanan, periode bayar tanggal 27 bulan sebelumnya sampai tanggal 5** (diubah Pangeran, 20 November 2026). Contohnya, sewa Desember dibayar antara 27 November dan 5 Desember. Jatuh tempo adalah **tanggal 5** untuk semua kontrak, dan tidak diatur per penyewa. Kedua tanggal disimpan di Pengaturan. Kalau tanggal mulai lebih besar dari tanggal jatuh tempo, tanggal mulai dihitung di bulan sebelumnya.
 - **Tagihan dibuat otomatis 14 hari sebelum jatuh tempo** oleh penjadwal Laravel, untuk setiap kontrak aktif. Dengan begitu penyewa bisa membayar lebih awal. Admin juga bisa membuat tagihan bulan berikutnya secara manual, misalnya untuk penyewa yang mau membayar jauh di muka. Di lokal, penjadwal dijalankan dengan `php artisan schedule:work`, atau tagihan yang belum ada dibuat saat aplikasi dibuka.
 - **Satu bukti transfer untuk satu tagihan.** Membayar beberapa bulan sekaligus tidak didukung: penyewa mengupload bukti untuk setiap bulan.
 - **Nominal harus pas.** Kalau kurang, admin menolak dengan alasan, lalu penyewa mentransfer kekurangannya dan mengupload ulang. Tidak ada cicilan atau saldo. Kalau penyewa kelebihan bayar, admin tetap menyetujui dan menyelesaikan kelebihannya di luar aplikasi.
@@ -213,7 +213,7 @@ Mengikuti alur dari Pangeran.
   - `lunas`
   - `ditolak` (bukti terakhir ditolak, penyewa perlu upload ulang)
 - **Label waktu** dihitung saat ditampilkan, bukan disimpan sebagai status:
-  - "Jatuh tempo dekat": selama periode bayar, tanggal 1–5, dan belum lunas.
+  - "Jatuh tempo dekat": selama periode bayar (tanggal 27 sampai 5) dan belum lunas.
   - "Telat": mulai tanggal 6 dan belum lunas.
 - **Tahap 1:** tagihan hanya berisi biaya sewa. Struktur data memakai baris rincian (`invoice_items`) supaya listrik, air, denda, atau biaya lain bisa ditambahkan nanti.
 
@@ -235,7 +235,7 @@ payments           id, invoice_id, file_path (storage privat), nominal_transfer,
 activity_logs      id, actor_id (null jika sistem), aksi, subject_type, subject_id, data (json), created_at
                    — hanya insert, tidak pernah update atau delete
 settings           rekening tujuan (bank, nomor, atas nama), nomor WhatsApp admin, nama kontrakan,
-                   tanggal mulai bayar (1), tanggal jatuh tempo (5)
+                   tanggal mulai bayar (27), tanggal jatuh tempo (5)
 Tahap 2:
 maintenance_tickets id, lease_id, kategori, deskripsi, jadwal_preferensi, jadwal_kunjungan, status,
                    dikonfirmasi_at
@@ -262,7 +262,7 @@ announcements      id, judul, isi, tampil_mulai, tampil_sampai, created_by
 ## 12. Keputusan yang saya ambil sendiri (mohon dicek)
 
 - Alasan penolakan **wajib diisi**.
-- Label "jatuh tempo dekat" berlaku selama **tanggal 1–5**. Mulai **tanggal 6**, tagihan yang belum lunas berstatus **telat**.
+- Label "jatuh tempo dekat" berlaku selama **tanggal 27 sampai 5**. Mulai **tanggal 6**, tagihan yang belum lunas berstatus **telat**.
 - Nomor HP disimpan dalam format `62xxx`. Penyewa boleh mengetik `08xxx` saat login, dan sistem mengubahnya otomatis.
 - Database lokal **SQLite**. PHP dipasang lewat **Laravel Herd** (gratis).
 - **Laravel 13** (rilis stabil terbaru, Maret 2026) dengan **PHP 8.4** dari Herd. Laravel 13 minimal butuh PHP 8.3, jadi hosting nanti harus mendukung PHP 8.3 atau lebih baru. Bukan Laravel 11 seperti di PLANNING.md: Laravel 11 sudah tidak menerima perbaikan keamanan sejak Maret 2026.

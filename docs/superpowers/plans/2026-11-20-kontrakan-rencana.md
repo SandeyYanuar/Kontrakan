@@ -65,7 +65,7 @@ Cara kerja di setiap langkah:
   - rekening tujuan
   - nomor WhatsApp admin
   - nama kontrakan
-  - tanggal mulai bayar (1) dan jatuh tempo (5)
+  - tanggal mulai bayar (27, bulan sebelumnya) dan jatuh tempo (5)
 - **Unit:** kode, harga sewa, keterangan. Hanya super admin yang bisa menambah atau mengubah. Perubahan harga dicatat di log.
 - **Admin:** tambah, nonaktifkan, dan reset password. Semuanya dicatat di log.
 - **Tes:** hak akses per peran, dan setiap aksi menghasilkan log.
@@ -91,10 +91,10 @@ Cara kerja di setiap langkah:
 - Command dijadwalkan harian, dan juga dipanggil saat admin membuka halaman Tagihan (cadangan untuk lokal).
 - Admin bisa membuat tagihan bulan berikutnya secara manual.
 - **Label waktu dihitung saat ditampilkan:**
-  - "jatuh tempo dekat": tanggal 1–5, belum lunas
+  - "jatuh tempo dekat": tanggal 27 bulan sebelumnya sampai 5, belum lunas
   - "telat": mulai tanggal 6, belum lunas
 - **Tes:**
-  - batas tanggal 21, 1, 5, dan 6
+  - batas tanggal 21, 26, 27, 5, dan 6
   - Februari
   - tidak ada tagihan ganda
   - perubahan harga hanya berlaku untuk tagihan yang belum dibuat
