@@ -46,6 +46,24 @@
         @endif
     @endforelse
 
+    @if ($pengumuman->isNotEmpty())
+        <section class="m-3 overflow-hidden rounded-xl border border-line bg-paper" aria-labelledby="judul-pengumuman">
+            <h2 id="judul-pengumuman" class="flex items-center gap-2 border-b border-line bg-soft px-3.5 py-2.5 text-sm font-bold">
+                <svg viewBox="0 0 24 24" class="size-4" aria-hidden="true"><path d="M4 10v4h3l6 4V6L7 10H4Z" fill="none" stroke="#2c4f86" stroke-width="2" stroke-linejoin="round"/><path d="M17 9a4 4 0 0 1 0 6" fill="none" stroke="#2c4f86" stroke-width="2" stroke-linecap="round"/></svg>
+                Pengumuman
+            </h2>
+            <ul class="divide-y divide-line">
+                @foreach ($pengumuman as $item)
+                    <li class="px-3.5 py-3">
+                        <p class="font-semibold">{{ $item->judul }}</p>
+                        <p class="mt-0.5 whitespace-pre-line text-sm text-ink">{{ $item->isi }}</p>
+                        <p class="mt-1 text-xs text-muted">{{ Format::tanggalPendek($item->tampil_mulai) }}</p>
+                    </li>
+                @endforeach
+            </ul>
+        </section>
+    @endif
+
     @if ($adaYangHarusDibayar && $pengaturan['bank_nomor'])
         <section class="m-3 rounded-xl border border-line bg-paper p-3.5">
             <h2 class="mb-2.5 text-sm font-bold">Transfer ke</h2>

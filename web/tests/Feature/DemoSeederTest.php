@@ -51,7 +51,10 @@ test('data contoh berisi unit dan penyewa dengan status yang berbeda-beda', func
 test('data contoh bisa dijalankan dua kali tanpa dobel', function () {
     $this->seed(DemoSeeder::class);
     $jumlahTagihan = Invoice::count();
+    $jumlahCatatan = ActivityLog::count();
     $this->seed(DemoSeeder::class);
+
+    expect(ActivityLog::count())->toBe($jumlahCatatan);
 
     expect(Unit::count())->toBe(9)
         ->and(User::whereNotNull('kode_penyewa')->count())->toBe(8)

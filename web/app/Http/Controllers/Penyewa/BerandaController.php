@@ -7,6 +7,7 @@ use App\Enums\StatusTagihan;
 use App\Http\Controllers\Controller;
 use App\Models\Invoice;
 use App\Models\Pengaturan;
+use App\Models\Pengumuman;
 use App\Rules\NomorHpIndonesia;
 use App\Services\PembuatTagihan;
 use App\Support\Aktivitas;
@@ -51,6 +52,7 @@ class BerandaController extends Controller
             'lunasTerakhir' => $lunasTerakhir,
             'statusPintu' => $statusPintu,
             'pengaturan' => Pengaturan::semua(),
+            'pengumuman' => Pengumuman::query()->tampil()->latest('tampil_mulai')->latest('id')->get(),
             'lewatBatas' => AturanTunggakan::lewatBatas($terbuka),
             'adaYangHarusDibayar' => $terbuka->contains(fn (Invoice $invoice): bool => $invoice->bisaDibayar()),
             'linkPengelola' => $nomorAdmin

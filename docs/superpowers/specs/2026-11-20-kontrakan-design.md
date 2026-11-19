@@ -164,6 +164,11 @@ Mengikuti alur dari Pangeran.
   - Status: Diterima, Dijadwalkan, Dikerjakan, Selesai.
   - Penyewa mengonfirmasi bahwa perbaikan sudah beres.
 - **Admin:** daftar laporan per status, mengubah status, dan mengisi jadwal kunjungan.
+- **Keputusan saat membangun Tahap 2 (20 November 2026):**
+  - Laporan kerusakan hanya menerima **foto** (maksimal 3, masing-masing 2 MB), belum video, karena batas upload PHP lokal 2 MB. Video bisa ditambahkan setelah hosting.
+  - Foto dari kamera HP dikecilkan otomatis di browser sebelum diupload. Ini juga berlaku untuk bukti transfer dan KTP.
+  - Waktu kunjungan yang diinginkan penyewa berupa tanggal ditambah pagi, siang, atau sore.
+  - Pengumuman tidak dihapus, hanya diakhiri, dan tetap tercatat di riwayat.
 - **Pengumuman:** admin menulis judul dan isi, lalu pengumuman tampil di beranda penyewa sampai tanggal berakhir yang diatur admin.
 
 ## 7. Sistem visual (disetujui lewat mockup)

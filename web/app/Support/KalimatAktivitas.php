@@ -79,6 +79,7 @@ class KalimatAktivitas
             Aksi::LaporanDibuat => ($data['kategori'] ?? '').' di unit '.($data['unit'] ?? ''),
             Aksi::LaporanDijadwalkan, Aksi::LaporanDikerjakan, Aksi::LaporanSelesai, Aksi::LaporanDikonfirmasi => ($data['kategori'] ?? '').' '.$this->objekPenyewa()
                 .(isset($data['jadwal']) ? ' pada '.$data['jadwal'] : ''),
+            Aksi::PengumumanDibuat, Aksi::PengumumanDiubah, Aksi::PengumumanDiakhiri => '"'.($data['judul'] ?? '').'"',
             Aksi::PasswordDiganti, Aksi::NomorDaruratDiubah, Aksi::KtpDiupload => '',
             default => $this->objekPenyewa(),
         };

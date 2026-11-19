@@ -42,6 +42,10 @@ enum Aksi: string
     case LaporanSelesai = 'laporan.selesai';
     case LaporanDikonfirmasi = 'laporan.dikonfirmasi';
 
+    case PengumumanDibuat = 'pengumuman.dibuat';
+    case PengumumanDiubah = 'pengumuman.diubah';
+    case PengumumanDiakhiri = 'pengumuman.diakhiri';
+
     case KtpDiupload = 'ktp.diupload';
     case KtpDilihat = 'ktp.dilihat';
     case KtpDisahkan = 'ktp.disahkan';
@@ -80,6 +84,9 @@ enum Aksi: string
             self::LaporanDikerjakan => 'menandai perbaikan sedang dikerjakan',
             self::LaporanSelesai => 'menandai perbaikan selesai',
             self::LaporanDikonfirmasi => 'mengonfirmasi perbaikan sudah beres',
+            self::PengumumanDibuat => 'menerbitkan pengumuman',
+            self::PengumumanDiubah => 'mengubah pengumuman',
+            self::PengumumanDiakhiri => 'mengakhiri pengumuman',
             self::KtpDiupload => 'mengupload KTP',
             self::KtpDilihat => 'membuka foto KTP',
             self::KtpDisahkan => 'menandai KTP sah',
@@ -99,6 +106,7 @@ enum Aksi: string
             self::PengingatWhatsApp => 'pengingat',
             self::BuktiDiupload => 'bukti',
             self::LaporanDibuat, self::LaporanDijadwalkan, self::LaporanDikerjakan, self::LaporanSelesai, self::LaporanDikonfirmasi => 'laporan',
+            self::PengumumanDibuat, self::PengumumanDiubah, self::PengumumanDiakhiri => 'pengumuman',
             self::KtpDiupload, self::KtpDilihat, self::KtpDisahkan, self::KtpDitolak, self::KtpDihapus => 'ktp',
             self::PenyewaDitambah, self::PenyewaDiubah, self::PasswordPenyewaDireset, self::PenyewaPindahUnit, self::SewaDiakhiri, self::TagihanDibuatManual => 'penyewa',
             default => 'pengaturan',
@@ -118,6 +126,7 @@ enum Aksi: string
             'pengingat' => 'Pengingat WhatsApp',
             'bukti' => 'Bukti diupload',
             'laporan' => 'Laporan kerusakan',
+            'pengumuman' => 'Pengumuman',
             'ktp' => 'KTP',
             'penyewa' => 'Penyewa dan tagihan',
             'pengaturan' => 'Unit, admin, dan pengaturan',

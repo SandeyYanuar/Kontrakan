@@ -6,11 +6,13 @@ use App\Enums\Aksi;
 use App\Enums\Peran;
 use App\Enums\StatusLaporan;
 use App\Enums\StatusTagihan;
+use App\Models\ActivityLog;
 use App\Models\Invoice;
 use App\Models\InvoiceItem;
 use App\Models\Lease;
 use App\Models\Payment;
 use App\Models\Pengaturan;
+use App\Models\Pengumuman;
 use App\Models\TenantIdentity;
 use App\Models\Unit;
 use App\Models\User;
@@ -89,21 +91,27 @@ class DemoSeeder extends Seeder
         $siti = $this->penyewa('Siti Aminah', 'KT-0003', '6281300000003', $units['A3'], $mulaiLama);
         $this->ktp($siti, TenantIdentity::SAH);
         $this->tagihanLunas($siti, [$this->duaBulanLalu, $this->bulanLalu]);
-        $this->bukti($siti, $this->tagihan($siti, $this->bulanIni), 750000, 'Bayar duluan ya pak, bulan depan mudik');
+        $tagihanSiti = $this->tagihan($siti, $this->bulanIni);
+        if ($tagihanSiti->payments()->doesntExist()) {
+            $this->bukti($siti, $tagihanSiti, 750000, 'Bayar duluan ya pak, bulan depan mudik');
+        }
 
         // 4. Dodi: bukti bulan ini ditolak karena nominal kurang. KTP ditolak.
         $dodi = $this->penyewa('Dodi Kurniawan', 'KT-0004', '6281300000004', $units['A4'], $mulaiLama);
         $this->ktp($dodi, TenantIdentity::DITOLAK, 'Foto buram, NIK tidak terbaca');
         $this->tagihanLunas($dodi, [$this->duaBulanLalu, $this->bulanLalu]);
-        $ditolak = $this->bukti($dodi, $this->tagihan($dodi, $this->bulanIni), 700000);
-        $this->tolak($ditolak, 'Nominal kurang Rp 50.000. Mohon transfer kekurangannya lalu upload ulang.');
+        $tagihanDodi = $this->tagihan($dodi, $this->bulanIni);
+        if ($tagihanDodi->payments()->doesntExist()) {
+            $this->tolak($this->bukti($dodi, $tagihanDodi, 700000), 'Nominal kurang Rp 50.000. Mohon transfer kekurangannya lalu upload ulang.');
+        }
 
         // 5. Rina: tunggakan bulan lalu (telat) dan bulan ini belum bayar. Sudah diingatkan lewat WhatsApp. KTP belum ada.
         $rina = $this->penyewa('Rina Marlina', 'KT-0005', '6281300000005', $units['B1'], $mulaiLama);
         $this->tagihanLunas($rina, [$this->duaBulanLalu]);
         $this->tagihan($rina, $this->bulanLalu);
         $this->tagihan($rina, $this->bulanIni);
-        $this->pada(CarbonImmutable::now()->subDay()->setTime(9, 12), fn () => Aktivitas::catat(Aksi::PengingatWhatsApp, $rina, [
+        $sudahDiingatkan = ActivityLog::query()->where('aksi', Aksi::PengingatWhatsApp)->where('subject_id', $rina->id)->exists();
+        $sudahDiingatkan || $this->pada(CarbonImmutable::now()->subDay()->setTime(9, 12), fn () => Aktivitas::catat(Aksi::PengingatWhatsApp, $rina, [
             'kode_penyewa' => 'KT-0005', 'unit' => 'B1', 'periode' => [$this->bulanLalu, $this->bulanIni], 'total' => 1700000, 'status' => 'Telat',
         ], $this->dewi));
 
@@ -120,6 +128,19 @@ class DemoSeeder extends Seeder
         $this->laporan($bambang, 'listrik', 'Stop kontak di kamar tidak ada listriknya.', StatusLaporan::Dijadwalkan, CarbonImmutable::now()->subDays(1));
         $this->laporan($hendra, 'ac', 'AC tidak dingin, keluar air dari unit dalam.', StatusLaporan::Selesai, CarbonImmutable::now()->subDays(4));
         $this->laporan($yuliani, 'furnitur', 'Engsel pintu lemari lepas.', StatusLaporan::Selesai, CarbonImmutable::now()->subDays(12), true);
+
+        // Pengumuman: sedang tampil, terjadwal, dan sudah berakhir.
+        $hari = CarbonImmutable::today();
+        foreach ([
+            ['Pemadaman air Sabtu pagi', "Air PDAM mati Sabtu pukul 08.00 sampai 12.00 karena perbaikan pipa.\nMohon tampung air sebelumnya.", $hari->subDay(), $hari->addDays(4)],
+            ['Parkir motor', 'Motor diparkir rapi di sisi kiri gang supaya mobil pemadam bisa lewat.', $hari->subDays(10), null],
+            ['Kerja bakti bulanan', 'Kerja bakti membersihkan selokan Minggu depan pukul 07.00.', $hari->addDays(5), $hari->addDays(12)],
+            ['Fogging nyamuk', 'Fogging sudah dilakukan. Terima kasih atas kerja samanya.', $hari->subDays(30), $hari->subDays(25)],
+        ] as [$judul, $isi, $mulai, $sampai]) {
+            Pengumuman::query()->firstOrCreate(['judul' => $judul], [
+                'isi' => $isi, 'tampil_mulai' => $mulai, 'tampil_sampai' => $sampai, 'created_by' => $this->superAdmin->id,
+            ]);
+        }
 
         // 8. Agus: sudah keluar bulan lalu dari B4 (akun nonaktif). B4 dan C1 kosong.
         $agus = $this->penyewa('Agus Salim', 'KT-0008', '6281300000008', $units['B4'], $mulaiLama);
