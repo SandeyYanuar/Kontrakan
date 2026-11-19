@@ -41,7 +41,10 @@ test('beranda penyewa punya tombol lapor kerusakan', function () {
 });
 
 test('penyewa mengirim laporan kerusakan dengan foto', function () {
-    $this->actingAs($this->penyewa)->get(route('penyewa.laporan.create'))->assertOk()->assertSee('Air atau pipa');
+    $this->actingAs($this->penyewa)->get(route('penyewa.laporan.create'))
+        ->assertOk()
+        ->assertSeeInOrder(['Listrik', 'Air atau pipa', 'Tembok', 'Atap', 'Pintu', 'Lainnya'])
+        ->assertDontSee('Furnitur');
 
     $this->actingAs($this->penyewa)
         ->post(route('penyewa.laporan.store'), dataLaporan())
@@ -99,13 +102,13 @@ test('penyewa lain tidak bisa melihat foto laporan', function () {
 });
 
 test('admin melihat daftar laporan, yang aktif di atas', function () {
-    MaintenanceTicket::factory()->for($this->lease)->create(['kategori' => 'ac', 'status' => StatusLaporan::Selesai, 'dikonfirmasi_at' => now()]);
+    MaintenanceTicket::factory()->for($this->lease)->create(['kategori' => 'atap', 'status' => StatusLaporan::Selesai, 'dikonfirmasi_at' => now()]);
     MaintenanceTicket::factory()->for($this->lease)->create(['kategori' => 'listrik']);
 
     $this->actingAs($this->admin)
         ->get(route('admin.laporan.index'))
         ->assertOk()
-        ->assertSeeInOrder(['Perlu ditangani (1)', 'Listrik', 'Sudah beres (1)', 'AC']);
+        ->assertSeeInOrder(['Perlu ditangani (1)', 'Listrik', 'Sudah beres (1)', 'Atap']);
 });
 
 test('admin menjadwalkan, mengerjakan, lalu menyelesaikan perbaikan', function () {

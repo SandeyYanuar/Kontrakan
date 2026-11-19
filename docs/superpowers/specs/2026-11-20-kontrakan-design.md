@@ -160,7 +160,7 @@ Permintaan Pangeran: penyewa mengupload KTP supaya ada data identitas yang sah.
 ### 6.7 Tahap 2: laporan kerusakan dan pengumuman
 Mengikuti alur dari Pangeran.
 - **Penyewa:**
-  - Lapor kerusakan: kategori (Listrik, Air/Pipa, AC, Furnitur, Kebersihan, Lainnya), deskripsi, foto atau video pendek, dan preferensi hari dan jam kunjungan.
+  - Lapor kerusakan: kategori (Listrik, Air/Pipa, Tembok, Atap, Pintu, Lainnya; diubah Pangeran 20 November 2026), deskripsi, foto atau video pendek, dan preferensi hari dan jam kunjungan.
   - Status: Diterima, Dijadwalkan, Dikerjakan, Selesai.
   - Penyewa mengonfirmasi bahwa perbaikan sudah beres.
 - **Admin:** daftar laporan per status, mengubah status, dan mengisi jadwal kunjungan.

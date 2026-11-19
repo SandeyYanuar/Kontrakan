@@ -126,8 +126,8 @@ class DemoSeeder extends Seeder
         // Laporan kerusakan dengan tahap yang berbeda-beda.
         $this->laporan($siti, 'air', 'Keran kamar mandi bocor, air menetes terus sejak kemarin.', null, CarbonImmutable::now()->subHours(3));
         $this->laporan($bambang, 'listrik', 'Stop kontak di kamar tidak ada listriknya.', StatusLaporan::Dijadwalkan, CarbonImmutable::now()->subDays(1));
-        $this->laporan($hendra, 'ac', 'AC tidak dingin, keluar air dari unit dalam.', StatusLaporan::Selesai, CarbonImmutable::now()->subDays(4));
-        $this->laporan($yuliani, 'furnitur', 'Engsel pintu lemari lepas.', StatusLaporan::Selesai, CarbonImmutable::now()->subDays(12), true);
+        $this->laporan($hendra, 'atap', 'Atap kamar depan bocor kalau hujan deras, plafon jadi basah.', StatusLaporan::Selesai, CarbonImmutable::now()->subDays(4));
+        $this->laporan($yuliani, 'pintu', 'Engsel pintu kamar mandi lepas, pintu tidak bisa ditutup.', StatusLaporan::Selesai, CarbonImmutable::now()->subDays(12), true);
 
         // Pengumuman: sedang tampil, terjadwal, dan sudah berakhir.
         $hari = CarbonImmutable::today();

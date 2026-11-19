@@ -37,9 +37,9 @@ enum StatusLaporan: string
         return [
             'listrik' => 'Listrik',
             'air' => 'Air atau pipa',
-            'ac' => 'AC',
-            'furnitur' => 'Furnitur',
-            'kebersihan' => 'Kebersihan',
+            'tembok' => 'Tembok',
+            'atap' => 'Atap',
+            'pintu' => 'Pintu',
             'lainnya' => 'Lainnya',
         ];
     }
