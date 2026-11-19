@@ -76,7 +76,21 @@
 
     {{-- Deretan pintu: satu pintu per unit, warnanya status paling mendesak. --}}
     @if ($units->isNotEmpty())
-        <div class="overflow-hidden rounded-2xl border border-line bg-paper" aria-label="Deretan unit. Pilih pintu untuk melihat penyewanya.">
+        {{-- HP: deretan pintu mengecil jadi strip warna. --}}
+        <div class="overflow-hidden rounded-xl border border-line bg-paper md:hidden" aria-hidden="true">
+            <div class="atap h-2.5"></div>
+            <div class="flex gap-1.5 px-3 pt-3">
+                @foreach ($units as $item)
+                    <div class="flex flex-1 flex-col items-center gap-1">
+                        <span class="{{ $item['baris'] ? WarnaStatus::latar($item['baris']->status()) : 'pintu-kosong' }} h-8 w-full rounded-t-[3px]"></span>
+                        <span class="text-[10px] font-bold text-muted">{{ $item['unit']->kode_unit }}</span>
+                    </div>
+                @endforeach
+            </div>
+            <div class="teras mt-1 h-2"></div>
+        </div>
+
+        <div class="hidden overflow-hidden rounded-2xl border border-line bg-paper md:block" aria-label="Deretan unit. Pilih pintu untuk melihat penyewanya.">
             <div class="atap relative h-[22px]"></div>
             <div class="flex overflow-x-auto px-3 pt-6">
                 @foreach ($units as $item)
@@ -181,12 +195,7 @@
                                         <span class="{{ WarnaStatus::latar($b->status()) }} grid size-[38px] shrink-0 place-items-center rounded-lg text-[13px] font-extrabold text-white">{{ $b->lease->unit->kode_unit }}</span>
                                         <div>
                                             <p class="font-semibold">{{ $penyewa->name }}</p>
-                                            <p class="text-xs text-muted">
-                                                {{ $penyewa->kode_penyewa }}
-                                                @if ($b->harusDibayar()->isNotEmpty())
-                                                    , {{ Format::rupiah($b->totalHarusDibayar()) }}
-                                                @endif
-                                            </p>
+                                            <p class="text-xs text-muted">{{ $penyewa->kode_penyewa }}@if ($b->harusDibayar()->isNotEmpty()), {{ Format::rupiah($b->totalHarusDibayar()) }}@endif</p>
                                         </div>
                                     </div>
                                     @if ($kunci === BarisTagihan::KELOMPOK_LUNAS)
