@@ -76,6 +76,9 @@ class KalimatAktivitas
             Aksi::SewaDiakhiri => $this->objekPenyewa().' di unit '.($data['unit'] ?? '')
                 .(isset($data['tgl_selesai']) ? ' per '.Format::tanggal(CarbonImmutable::parse($data['tgl_selesai'])) : ''),
             Aksi::PengaturanDiubah => implode(', ', array_map(fn (string $kunci): string => self::LABEL_PENGATURAN[$kunci] ?? $kunci, array_keys($data))),
+            Aksi::LaporanDibuat => ($data['kategori'] ?? '').' di unit '.($data['unit'] ?? ''),
+            Aksi::LaporanDijadwalkan, Aksi::LaporanDikerjakan, Aksi::LaporanSelesai, Aksi::LaporanDikonfirmasi => ($data['kategori'] ?? '').' '.$this->objekPenyewa()
+                .(isset($data['jadwal']) ? ' pada '.$data['jadwal'] : ''),
             Aksi::PasswordDiganti, Aksi::NomorDaruratDiubah, Aksi::KtpDiupload => '',
             default => $this->objekPenyewa(),
         };

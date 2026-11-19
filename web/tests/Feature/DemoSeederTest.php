@@ -4,6 +4,7 @@ use App\Enums\StatusTagihan;
 use App\Models\ActivityLog;
 use App\Models\Invoice;
 use App\Models\Lease;
+use App\Models\MaintenanceTicket;
 use App\Models\TenantIdentity;
 use App\Models\Unit;
 use App\Models\User;
@@ -40,6 +41,9 @@ test('data contoh berisi unit dan penyewa dengan status yang berbeda-beda', func
     expect(TenantIdentity::pluck('status')->unique()->sort()->values()->all())
         ->toBe([TenantIdentity::DITOLAK, TenantIdentity::MENUNGGU, TenantIdentity::SAH]);
 
+    expect(MaintenanceTicket::pluck('status')->map->value->unique()->sort()->values()->all())
+        ->toBe(['dijadwalkan', 'diterima', 'selesai']);
+
     expect(ActivityLog::count())->toBeGreaterThan(10);
     expect(Invoice::where('status', StatusTagihan::Lunas)->count())->toBeGreaterThan(5);
 })->with(['2026-11-20 10:00', '2026-11-28 10:00', '2026-12-08 10:00']);
@@ -51,5 +55,7 @@ test('data contoh bisa dijalankan dua kali tanpa dobel', function () {
 
     expect(Unit::count())->toBe(9)
         ->and(User::whereNotNull('kode_penyewa')->count())->toBe(8)
-        ->and(Invoice::count())->toBe($jumlahTagihan);
+        ->and(Invoice::count())->toBe($jumlahTagihan)
+        ->and(Invoice::whereHas('lease.penyewa', fn ($q) => $q->where('kode_penyewa', 'KT-0007'))->pluck('status')->unique()->all())
+        ->toBe([StatusTagihan::Lunas]);
 });

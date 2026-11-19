@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Enums\Aksi;
 use App\Enums\Peran;
+use App\Enums\StatusLaporan;
 use App\Enums\StatusTagihan;
 use App\Models\Invoice;
 use App\Models\InvoiceItem;
@@ -23,7 +24,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
 
 /**
- * Data contoh untuk mencoba aplikasi: 9 unit dan 8 penyewa dengan status yang berbeda-beda.
+ * Data contoh untuk mencoba aplikasi: 9 unit, 8 penyewa, dan laporan kerusakan dengan status yang berbeda-beda.
  * Semua tanggal dihitung dari hari ini, jadi statusnya tetap bervariasi kapan pun seeder dijalankan.
  *
  * Jalankan HANYA ke database contoh: php artisan db:seed --class=DemoSeeder --env=demo
@@ -114,6 +115,12 @@ class DemoSeeder extends Seeder
         $this->ktp($hendra, TenantIdentity::SAH);
         $this->tagihanLunas($hendra, [$this->duaBulanLalu, $this->bulanLalu, $this->bulanIni]);
 
+        // Laporan kerusakan dengan tahap yang berbeda-beda.
+        $this->laporan($siti, 'air', 'Keran kamar mandi bocor, air menetes terus sejak kemarin.', null, CarbonImmutable::now()->subHours(3));
+        $this->laporan($bambang, 'listrik', 'Stop kontak di kamar tidak ada listriknya.', StatusLaporan::Dijadwalkan, CarbonImmutable::now()->subDays(1));
+        $this->laporan($hendra, 'ac', 'AC tidak dingin, keluar air dari unit dalam.', StatusLaporan::Selesai, CarbonImmutable::now()->subDays(4));
+        $this->laporan($yuliani, 'furnitur', 'Engsel pintu lemari lepas.', StatusLaporan::Selesai, CarbonImmutable::now()->subDays(12), true);
+
         // 8. Agus: sudah keluar bulan lalu dari B4 (akun nonaktif). B4 dan C1 kosong.
         $agus = $this->penyewa('Agus Salim', 'KT-0008', '6281300000008', $units['B4'], $mulaiLama);
         $this->ktp($agus, TenantIdentity::SAH);
@@ -124,12 +131,12 @@ class DemoSeeder extends Seeder
 
     private function penyewa(string $nama, string $kode, string $phone, Unit $unit, CarbonImmutable $mulai): User
     {
-        $penyewa = User::query()->updateOrCreate(['phone' => $phone], [
+        $penyewa = User::query()->updateOrCreate(['kode_penyewa' => $kode], [
             'name' => $nama,
+            'phone' => $phone,
             'password' => 'penyewa123',
             'role' => Peran::Penyewa,
             'is_active' => true,
-            'kode_penyewa' => $kode,
         ]);
 
         $lease = Lease::query()->updateOrCreate(
@@ -141,12 +148,53 @@ class DemoSeeder extends Seeder
         return $penyewa->load('leaseAktif.unit');
     }
 
+    private function laporan(User $penyewa, string $kategori, string $deskripsi, ?StatusLaporan $status, CarbonImmutable $pada, bool $dikonfirmasi = false): void
+    {
+        $lease = $penyewa->leaseAktif;
+
+        if ($lease->laporan()->where('kategori', $kategori)->exists()) {
+            return;
+        }
+
+        $this->pada($pada, function () use ($lease, $penyewa, $kategori, $deskripsi): void {
+            $laporan = $lease->laporan()->create([
+                'kategori' => $kategori,
+                'deskripsi' => $deskripsi,
+                'preferensi_tanggal' => now()->addDays(2)->toDateString(),
+                'preferensi_waktu' => 'pagi',
+                'status' => StatusLaporan::Diterima,
+            ]);
+            $path = 'demo/laporan-'.$laporan->id.'.png';
+            Storage::disk('local')->put($path, $this->gambar(['Foto kerusakan (contoh)', $laporan->labelKategori(), 'Unit '.$lease->unit->kode_unit], [176, 116, 21]));
+            $laporan->media()->create(['file_path' => $path, 'jenis' => 'foto']);
+            Aktivitas::catat(Aksi::LaporanDibuat, $laporan, ['kode_penyewa' => $penyewa->kode_penyewa, 'unit' => $lease->unit->kode_unit, 'kategori' => $laporan->labelKategori()], $penyewa);
+        });
+
+        $laporan = $lease->laporan()->where('kategori', $kategori)->first();
+
+        if ($status === null) {
+            return;
+        }
+
+        $this->pada($pada->addHours(2), function () use ($laporan, $penyewa, $lease): void {
+            $laporan->update(['status' => StatusLaporan::Dijadwalkan, 'jadwal_kunjungan' => now()->addDays(2)->setTime(9, 0)]);
+            Aktivitas::catat(Aksi::LaporanDijadwalkan, $laporan, ['kode_penyewa' => $penyewa->kode_penyewa, 'unit' => $lease->unit->kode_unit, 'kategori' => $laporan->labelKategori(), 'jadwal' => $laporan->jadwal_kunjungan->locale('id')->translatedFormat('l, j F').' pukul 09.00'], $this->dewi);
+        });
+
+        if ($status === StatusLaporan::Selesai) {
+            $this->pada($pada->addDays(2)->addHours(4), function () use ($laporan, $penyewa, $lease, $dikonfirmasi): void {
+                $laporan->update(['status' => StatusLaporan::Selesai, 'selesai_at' => now(), 'dikonfirmasi_at' => $dikonfirmasi ? now()->addHours(3) : null]);
+                Aktivitas::catat(Aksi::LaporanSelesai, $laporan, ['kode_penyewa' => $penyewa->kode_penyewa, 'unit' => $lease->unit->kode_unit, 'kategori' => $laporan->labelKategori()], $this->dewi);
+            });
+        }
+    }
+
     private function tagihan(User $penyewa, string $periode, StatusTagihan $status = StatusTagihan::BelumBayar): Invoice
     {
         $lease = $penyewa->leaseAktif;
         $harga = $lease->unit->harga_sewa;
 
-        $invoice = Invoice::query()->updateOrCreate(['lease_id' => $lease->id, 'periode' => $periode], [
+        $invoice = Invoice::query()->firstOrCreate(['lease_id' => $lease->id, 'periode' => $periode], [
             'jatuh_tempo' => PeriodeBayar::jatuhTempo($periode),
             'total' => $harga,
             'status' => $status,

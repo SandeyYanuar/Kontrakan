@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\KtpPenyewaController;
+use App\Http\Controllers\Admin\LaporanController as AdminLaporanController;
 use App\Http\Controllers\Admin\PembayaranController as AdminPembayaranController;
 use App\Http\Controllers\Admin\PengaturanController;
 use App\Http\Controllers\Admin\PenyewaController;
@@ -11,8 +12,10 @@ use App\Http\Controllers\Admin\UnitController;
 use App\Http\Controllers\AkunController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\KuitansiController;
+use App\Http\Controllers\LaporanFotoController;
 use App\Http\Controllers\Penyewa\BerandaController;
 use App\Http\Controllers\Penyewa\KtpController;
+use App\Http\Controllers\Penyewa\LaporanController;
 use App\Http\Controllers\Penyewa\PembayaranController;
 use Illuminate\Support\Facades\Route;
 
@@ -29,6 +32,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/logout', [LoginController::class, 'destroy'])->name('logout');
 
     Route::get('/kuitansi/{invoice}', KuitansiController::class)->middleware('peran:super_admin,admin,tenant')->name('kuitansi');
+    Route::get('/laporan/foto/{media}', LaporanFotoController::class)->middleware('peran:super_admin,admin,tenant')->name('laporan.foto');
 
     Route::middleware('peran:super_admin,admin,tenant')->prefix('akun')->name('akun.')->group(function () {
         Route::get('/password', [AkunController::class, 'editPassword'])->name('password');
@@ -45,6 +49,10 @@ Route::middleware(['auth', 'peran:super_admin,admin'])->prefix('admin')->name('a
     Route::post('/tagihan/{lease}/bulan-berikutnya', [TagihanController::class, 'buatBulanBerikutnya'])->name('tagihan.bulan-berikutnya');
     Route::get('/unit', [UnitController::class, 'index'])->name('unit.index');
     Route::get('/riwayat', [RiwayatController::class, 'index'])->name('riwayat');
+    Route::get('/laporan', [AdminLaporanController::class, 'index'])->name('laporan.index');
+    Route::get('/laporan/{laporan}', [AdminLaporanController::class, 'show'])->name('laporan.show');
+    Route::post('/laporan/{laporan}/jadwal', [AdminLaporanController::class, 'jadwal'])->name('laporan.jadwal');
+    Route::post('/laporan/{laporan}/status', [AdminLaporanController::class, 'status'])->name('laporan.status');
 
     Route::get('/penyewa', [PenyewaController::class, 'index'])->name('penyewa.index');
     Route::get('/penyewa/tambah', [PenyewaController::class, 'create'])->name('penyewa.create');
@@ -92,6 +100,10 @@ Route::middleware(['auth', 'peran:tenant'])->name('penyewa.')->group(function ()
     Route::get('/tagihan/{invoice}/bayar', [PembayaranController::class, 'create'])->name('bayar');
     Route::post('/tagihan/{invoice}/bayar', [PembayaranController::class, 'store'])->name('bayar.simpan');
     Route::get('/bukti/{payment}', [PembayaranController::class, 'bukti'])->name('bukti');
+    Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
+    Route::get('/laporan/baru', [LaporanController::class, 'create'])->name('laporan.create');
+    Route::post('/laporan', [LaporanController::class, 'store'])->name('laporan.store');
+    Route::post('/laporan/{laporan}/konfirmasi', [LaporanController::class, 'konfirmasi'])->name('laporan.konfirmasi');
     Route::get('/profil/ktp', [KtpController::class, 'edit'])->name('ktp');
     Route::post('/profil/ktp', [KtpController::class, 'simpan'])->name('ktp.simpan');
     Route::get('/profil/ktp/foto', [KtpController::class, 'foto'])->name('ktp.foto');

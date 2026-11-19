@@ -59,6 +59,14 @@ class Lease extends Model
     }
 
     /**
+     * @return HasMany<MaintenanceTicket, $this>
+     */
+    public function laporan(): HasMany
+    {
+        return $this->hasMany(MaintenanceTicket::class);
+    }
+
+    /**
      * @param  Builder<Lease>  $query
      */
     public function scopeAktif(Builder $query): void

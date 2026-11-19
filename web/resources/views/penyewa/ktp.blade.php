@@ -48,7 +48,7 @@
 
                 <div>
                     <label for="foto" class="mb-1.5 block text-sm font-semibold">Foto KTP</label>
-                    <input id="foto" name="foto" type="file" accept="image/jpeg,image/png" capture="environment"
+                    <input id="foto" name="foto" type="file" accept="image/jpeg,image/png" data-kecilkan
                         @error('foto') aria-invalid="true" aria-describedby="foto-keterangan" @enderror
                         class="block w-full rounded-[10px] border border-dashed border-[#aeb7c2] bg-paper p-3 text-sm file:mr-3 file:rounded-lg file:border-0 file:bg-dicek-bg file:px-3 file:py-2 file:font-semibold file:text-dicek">
                     <div id="foto-keterangan">

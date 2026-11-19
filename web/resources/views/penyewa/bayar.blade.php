@@ -22,7 +22,7 @@
 
             <div>
                 <label for="bukti" class="mb-1.5 block text-sm font-semibold">Foto atau screenshot bukti</label>
-                <input id="bukti" name="bukti" type="file" accept="image/jpeg,image/png,application/pdf"
+                <input id="bukti" name="bukti" type="file" accept="image/jpeg,image/png,application/pdf" data-kecilkan
                     @error('bukti') aria-invalid="true" @enderror aria-describedby="bukti-keterangan"
                     class="block w-full rounded-xl border-2 border-dashed border-[#aeb7c2] bg-paper p-4 text-sm file:mr-3 file:rounded-lg file:border-0 file:bg-dicek-bg file:px-3 file:py-2 file:font-semibold file:text-dicek">
                 <div id="bukti-keterangan">

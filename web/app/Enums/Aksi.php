@@ -36,6 +36,12 @@ enum Aksi: string
     case PersetujuanDibatalkan = 'pembayaran.persetujuan_dibatalkan';
     case NomorDaruratDiubah = 'akun.nomor_darurat_diubah';
 
+    case LaporanDibuat = 'laporan.dibuat';
+    case LaporanDijadwalkan = 'laporan.dijadwalkan';
+    case LaporanDikerjakan = 'laporan.dikerjakan';
+    case LaporanSelesai = 'laporan.selesai';
+    case LaporanDikonfirmasi = 'laporan.dikonfirmasi';
+
     case KtpDiupload = 'ktp.diupload';
     case KtpDilihat = 'ktp.dilihat';
     case KtpDisahkan = 'ktp.disahkan';
@@ -69,6 +75,11 @@ enum Aksi: string
             self::PembayaranDitolak => 'menolak pembayaran',
             self::PersetujuanDibatalkan => 'membatalkan persetujuan pembayaran',
             self::NomorDaruratDiubah => 'mengubah nomor darurat',
+            self::LaporanDibuat => 'melaporkan kerusakan',
+            self::LaporanDijadwalkan => 'menjadwalkan perbaikan',
+            self::LaporanDikerjakan => 'menandai perbaikan sedang dikerjakan',
+            self::LaporanSelesai => 'menandai perbaikan selesai',
+            self::LaporanDikonfirmasi => 'mengonfirmasi perbaikan sudah beres',
             self::KtpDiupload => 'mengupload KTP',
             self::KtpDilihat => 'membuka foto KTP',
             self::KtpDisahkan => 'menandai KTP sah',
@@ -87,6 +98,7 @@ enum Aksi: string
             self::PembayaranDitolak, self::PersetujuanDibatalkan => 'ditolak',
             self::PengingatWhatsApp => 'pengingat',
             self::BuktiDiupload => 'bukti',
+            self::LaporanDibuat, self::LaporanDijadwalkan, self::LaporanDikerjakan, self::LaporanSelesai, self::LaporanDikonfirmasi => 'laporan',
             self::KtpDiupload, self::KtpDilihat, self::KtpDisahkan, self::KtpDitolak, self::KtpDihapus => 'ktp',
             self::PenyewaDitambah, self::PenyewaDiubah, self::PasswordPenyewaDireset, self::PenyewaPindahUnit, self::SewaDiakhiri, self::TagihanDibuatManual => 'penyewa',
             default => 'pengaturan',
@@ -105,6 +117,7 @@ enum Aksi: string
             'ditolak' => 'Ditolak atau dibatalkan',
             'pengingat' => 'Pengingat WhatsApp',
             'bukti' => 'Bukti diupload',
+            'laporan' => 'Laporan kerusakan',
             'ktp' => 'KTP',
             'penyewa' => 'Penyewa dan tagihan',
             'pengaturan' => 'Unit, admin, dan pengaturan',

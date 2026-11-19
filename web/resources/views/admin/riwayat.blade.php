@@ -21,6 +21,7 @@
         'ditolak' => ['bg-telat-bg', '<path d="M7 7l10 10M17 7L7 17" fill="none" stroke="#a8261c" stroke-width="2.6" stroke-linecap="round"/>'],
         'pengingat' => ['bg-[#ddf5e6]', '<path fill="#1da851" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Z"/>'],
         'bukti' => ['bg-dicek-bg', '<path d="M12 16V5M7 10l5-5 5 5M5 19h14" fill="none" stroke="#2c4f86" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>'],
+        'laporan' => ['bg-dekat-bg', '<path d="M14.5 5.5a4 4 0 0 0-5 5L4 16l4 4 5.5-5.5a4 4 0 0 0 5-5l-2.5 2.5-2.5-.5-.5-2.5 2.5-2.5Z" fill="none" stroke="#b07415" stroke-width="2" stroke-linejoin="round"/>'],
         'ktp' => ['bg-dekat-bg', '<rect x="3" y="6" width="18" height="12" rx="2" fill="none" stroke="#b07415" stroke-width="2"/><path d="M7 10h4M7 14h6" stroke="#b07415" stroke-width="2" stroke-linecap="round"/>'],
         'penyewa' => ['bg-soft', '<circle cx="12" cy="8" r="3.5" fill="none" stroke="#5a6573" stroke-width="2"/><path d="M5 20c1-4 4-6 7-6s6 2 7 6" fill="none" stroke="#5a6573" stroke-width="2" stroke-linecap="round"/>'],
         'pengaturan' => ['bg-soft', '<circle cx="12" cy="12" r="3" fill="none" stroke="#5a6573" stroke-width="2"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3" stroke="#5a6573" stroke-width="2" stroke-linecap="round"/>'],

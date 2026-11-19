@@ -61,6 +61,16 @@
     @endif
 
     <div class="m-3 grid grid-cols-2 gap-2.5">
+        @if ($lease)
+            <a href="{{ route('penyewa.laporan.create') }}" class="flex items-center gap-2 rounded-xl border border-line bg-paper p-3 text-[13px] font-semibold">
+                <svg viewBox="0 0 24 24" class="size-[18px] shrink-0" aria-hidden="true"><path d="M14.5 5.5a4 4 0 0 0-5 5L4 16l4 4 5.5-5.5a4 4 0 0 0 5-5l-2.5 2.5-2.5-.5-.5-2.5 2.5-2.5Z" fill="none" stroke="#b07415" stroke-width="2" stroke-linejoin="round"/></svg>
+                Lapor kerusakan
+            </a>
+            <a href="{{ route('penyewa.laporan.index') }}" class="flex items-center gap-2 rounded-xl border border-line bg-paper p-3 text-[13px] font-semibold">
+                <svg viewBox="0 0 24 24" class="size-[18px] shrink-0" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10" fill="none" stroke="#b07415" stroke-width="2" stroke-linecap="round"/></svg>
+                Status perbaikan
+            </a>
+        @endif
         @if ($linkPengelola)
             <a href="{{ $linkPengelola }}" target="_blank" rel="noopener" class="flex items-center gap-2 rounded-xl border border-line bg-paper p-3 text-[13px] font-semibold">
                 <svg viewBox="0 0 24 24" class="size-[18px] shrink-0 fill-wa" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Z"/></svg>
