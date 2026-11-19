@@ -31,6 +31,9 @@ enum Aksi: string
     case PengingatWhatsApp = 'tagihan.pengingat_whatsapp';
 
     case BuktiDiupload = 'pembayaran.bukti_diupload';
+    case PembayaranDisetujui = 'pembayaran.disetujui';
+    case PembayaranDitolak = 'pembayaran.ditolak';
+    case PersetujuanDibatalkan = 'pembayaran.persetujuan_dibatalkan';
     case NomorDaruratDiubah = 'akun.nomor_darurat_diubah';
 
     case KtpDiupload = 'ktp.diupload';
@@ -62,6 +65,9 @@ enum Aksi: string
             self::TagihanDibuatManual => 'membuat tagihan lebih awal',
             self::PengingatWhatsApp => 'membuka pengingat WhatsApp',
             self::BuktiDiupload => 'mengupload bukti transfer',
+            self::PembayaranDisetujui => 'menyetujui pembayaran',
+            self::PembayaranDitolak => 'menolak pembayaran',
+            self::PersetujuanDibatalkan => 'membatalkan persetujuan pembayaran',
             self::NomorDaruratDiubah => 'mengubah nomor darurat',
             self::KtpDiupload => 'mengupload KTP',
             self::KtpDilihat => 'membuka foto KTP',

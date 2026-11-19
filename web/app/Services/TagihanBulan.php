@@ -44,7 +44,7 @@ class TagihanBulan
 
         $leases = Lease::query()
             ->aktif()
-            ->with(['unit', 'penyewa', 'invoices' => fn ($query) => $query->where('periode', '<=', $periode)->orderBy('periode')])
+            ->with(['unit', 'penyewa', 'invoices' => fn ($query) => $query->where('periode', '<=', $periode)->orderBy('periode')->with('paymentTerakhir')])
             ->get();
 
         $baris = $leases

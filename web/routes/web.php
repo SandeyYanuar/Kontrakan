@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\KtpPenyewaController;
+use App\Http\Controllers\Admin\PembayaranController as AdminPembayaranController;
 use App\Http\Controllers\Admin\PengaturanController;
 use App\Http\Controllers\Admin\PenyewaController;
 use App\Http\Controllers\Admin\TagihanController;
@@ -34,6 +35,9 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'peran:super_admin,admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/tagihan', [TagihanController::class, 'index'])->name('tagihan');
     Route::post('/tagihan/{lease}/ingatkan', [TagihanController::class, 'ingatkan'])->name('tagihan.ingatkan');
+    Route::get('/pembayaran/{payment}/bukti', [AdminPembayaranController::class, 'bukti'])->name('pembayaran.bukti');
+    Route::post('/pembayaran/{payment}/setujui', [AdminPembayaranController::class, 'setujui'])->name('pembayaran.setujui');
+    Route::post('/pembayaran/{payment}/tolak', [AdminPembayaranController::class, 'tolak'])->name('pembayaran.tolak');
     Route::post('/tagihan/{lease}/bulan-berikutnya', [TagihanController::class, 'buatBulanBerikutnya'])->name('tagihan.bulan-berikutnya');
     Route::get('/unit', [UnitController::class, 'index'])->name('unit.index');
 
@@ -62,6 +66,7 @@ Route::middleware(['auth', 'peran:super_admin,admin'])->prefix('admin')->name('a
         Route::post('/penyewa/{penyewa}/pindah', [PenyewaController::class, 'pindah'])->name('penyewa.pindah');
         Route::get('/penyewa/{penyewa}/akhiri', [PenyewaController::class, 'formAkhiri'])->name('penyewa.akhiri.form');
         Route::post('/penyewa/{penyewa}/akhiri', [PenyewaController::class, 'akhiri'])->name('penyewa.akhiri');
+        Route::post('/pembayaran/{payment}/batalkan', [AdminPembayaranController::class, 'batalkan'])->name('pembayaran.batalkan');
         Route::delete('/penyewa/{penyewa}/ktp/foto', [KtpPenyewaController::class, 'hapus'])->name('penyewa.ktp.hapus');
 
         Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');

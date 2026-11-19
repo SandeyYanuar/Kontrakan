@@ -48,7 +48,44 @@
             </ul>
         </section>
 
-        <section class="rounded-2xl border border-line bg-paper p-6">
+        <section class="rounded-2xl border border-line bg-paper p-6 lg:col-start-1 lg:row-start-2">
+            <h2 class="text-lg font-bold">Riwayat tagihan</h2>
+            @if ($tagihan->isEmpty())
+                <p class="mt-3 text-sm text-muted">Belum ada tagihan.</p>
+            @else
+                <ul class="mt-3 divide-y divide-line text-sm">
+                    @foreach ($tagihan as $invoice)
+                        @php($bayar = $invoice->paymentTerakhir)
+                        <li class="py-3">
+                            <div class="flex items-center justify-between gap-3">
+                                <span><b>{{ Format::bulan($invoice->periode) }}</b> <span class="text-muted">unit {{ $invoice->lease->unit->kode_unit }}, {{ Format::rupiah($invoice->total) }}</span></span>
+                                <span class="{{ \App\Support\WarnaStatus::label($invoice->label()) }} whitespace-nowrap rounded-full px-2.5 py-1 text-xs font-semibold">
+                                    {{ match ($invoice->label()) { 'lunas' => 'Lunas', 'menunggu' => 'Perlu dicek', 'ditolak' => 'Ditolak', 'telat' => 'Telat', 'dekat' => 'Belum bayar', default => 'Belum periode' } }}
+                                </span>
+                            </div>
+                            @if ($bayar && $bayar->status === \App\Models\Payment::DISETUJUI)
+                                <p class="mt-1 text-xs text-muted">Disetujui {{ $bayar->pemeriksa?->name }}, {{ Format::tanggal($bayar->reviewed_at) }}</p>
+                                @can('super-admin')
+                                    <details class="mt-2">
+                                        <summary class="cursor-pointer text-xs font-semibold text-telat">Batalkan persetujuan</summary>
+                                        <form method="POST" action="{{ route('admin.pembayaran.batalkan', $bayar) }}" class="mt-2 space-y-2" novalidate
+                                              onsubmit="return confirm('Batalkan persetujuan {{ Format::bulan($invoice->periode) }}? Tagihan kembali belum bayar.')">
+                                            @csrf
+                                            <x-field label="Alasan pembatalan" name="alasan" placeholder="Contoh: uang ternyata belum masuk" />
+                                            <x-tombol jenis="bahaya">Batalkan persetujuan</x-tombol>
+                                        </form>
+                                    </details>
+                                @endcan
+                            @elseif ($bayar && $bayar->status === \App\Models\Payment::DITOLAK)
+                                <p class="mt-1 text-xs text-muted">Ditolak: {{ $bayar->alasan }}</p>
+                            @endif
+                        </li>
+                    @endforeach
+                </ul>
+            @endif
+        </section>
+
+        <section class="rounded-2xl border border-line bg-paper p-6 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:self-start">
             <div class="flex flex-wrap items-center justify-between gap-2">
                 <h2 class="text-lg font-bold">KTP</h2>
                 <span @class([

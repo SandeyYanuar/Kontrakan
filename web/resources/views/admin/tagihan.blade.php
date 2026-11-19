@@ -218,7 +218,44 @@
         </div>
     @endif
 
+    {{-- Pop-up cek bukti transfer untuk setiap tagihan yang menunggu dicek. --}}
+    @foreach ($baris as $b)
+        @foreach ($b->menungguDicek() as $invoice)
+            @if ($invoice->paymentTerakhir)
+                <x-tagihan.popup-bukti :invoice="$invoice" />
+            @endif
+        @endforeach
+    @endforeach
+
     <script>
+        // Pop-up bukti: buka, muat gambar saat dibuka, tutup lewat Batal / Esc / klik di luar.
+        function bukaBukti(dialog) {
+            dialog.querySelectorAll('img[data-src]').forEach(function (img) { img.src = img.dataset.src; });
+            dialog.showModal();
+        }
+        document.querySelectorAll('[data-cek-bukti]').forEach(function (tombol) {
+            tombol.addEventListener('click', function () {
+                var dialog = document.getElementById('bukti-' + tombol.dataset.cekBukti);
+                if (dialog) { bukaBukti(dialog); }
+            });
+        });
+        document.querySelectorAll('dialog[id^="bukti-"]').forEach(function (dialog) {
+            dialog.addEventListener('click', function (e) { if (e.target === dialog) { dialog.close(); } });
+            dialog.querySelector('[data-tutup]').addEventListener('click', function () { dialog.close(); });
+            var tolak = dialog.querySelector('[data-tolak]');
+            tolak.addEventListener('click', function () {
+                var form = document.getElementById('form-tolak-' + tolak.dataset.tolak);
+                if (tolak.dataset.siap) { form.submit(); return; }
+                form.querySelector('[data-alasan]').classList.remove('hidden');
+                form.querySelector('textarea').focus();
+                tolak.dataset.siap = '1';
+                tolak.textContent = 'Kirim penolakan';
+                tolak.classList.remove('bg-paper', 'text-telat');
+                tolak.classList.add('bg-telat', 'text-white');
+            });
+            if (dialog.dataset.bukaOtomatis) { bukaBukti(dialog); }
+        });
+
         // Klik pintu: sorot baris penyewanya dan gulir ke sana.
         document.querySelectorAll('[data-unit]').forEach(function (pintu) {
             pintu.addEventListener('click', function () {

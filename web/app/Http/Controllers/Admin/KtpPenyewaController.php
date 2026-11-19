@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Enums\Aksi;
 use App\Http\Controllers\Controller;
+use App\Models\Invoice;
 use App\Models\TenantIdentity;
 use App\Models\User;
 use App\Support\Aktivitas;
@@ -24,6 +25,11 @@ class KtpPenyewaController extends Controller
 
         return view('admin.penyewa.show', [
             'penyewa' => $penyewa->load('identitas.pemeriksa', 'leaseAktif.unit', 'leases.unit'),
+            'tagihan' => Invoice::query()
+                ->whereIn('lease_id', $penyewa->leases->pluck('id'))
+                ->with('lease.unit', 'paymentTerakhir.pemeriksa')
+                ->orderByDesc('periode')
+                ->get(),
         ]);
     }
 
