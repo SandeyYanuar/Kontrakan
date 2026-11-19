@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Enums\Peran;
 use App\Http\Controllers\Controller;
+use App\Models\Pengaturan;
 use App\Models\User;
 use App\Support\NomorHp;
 use Illuminate\Http\RedirectResponse;
@@ -21,14 +21,10 @@ class LoginController extends Controller
      */
     public function create(): View
     {
-        $superAdmin = User::query()
-            ->where('role', Peran::SuperAdmin)
-            ->where('is_active', true)
-            ->oldest('id')
-            ->first();
+        $nomorAdmin = Pengaturan::nomorWhatsAppAdmin();
 
-        $linkLupaPassword = $superAdmin
-            ? NomorHp::linkWhatsApp($superAdmin->phone, 'Halo, saya lupa password akun kontrakan. Nama saya: ')
+        $linkLupaPassword = $nomorAdmin
+            ? NomorHp::linkWhatsApp($nomorAdmin, 'Halo, saya lupa password akun kontrakan. Nama saya: ')
             : null;
 
         return view('auth.login', ['linkLupaPassword' => $linkLupaPassword]);

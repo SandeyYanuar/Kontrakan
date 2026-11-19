@@ -21,6 +21,14 @@ class Format
     }
 
     /**
+     * Ambil angka dari ketikan nominal, misalnya "Rp 850.000" menjadi "850000".
+     */
+    public static function angka(?string $ketikan): string
+    {
+        return preg_replace('/\D/', '', (string) $ketikan);
+    }
+
+    /**
      * Format tanggal lengkap, misalnya "5 Desember 2026".
      */
     public static function tanggal(CarbonInterface $tanggal): string

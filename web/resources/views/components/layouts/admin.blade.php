@@ -9,16 +9,16 @@
     $menu = [
         ['kunci' => 'tagihan', 'label' => 'Tagihan', 'url' => route('admin.tagihan'), 'super_admin' => false],
         ['kunci' => 'penyewa', 'label' => 'Penyewa', 'url' => '#', 'super_admin' => false],
-        ['kunci' => 'unit', 'label' => 'Unit', 'url' => '#', 'super_admin' => false],
+        ['kunci' => 'unit', 'label' => 'Unit', 'url' => route('admin.unit.index'), 'super_admin' => false],
         ['kunci' => 'riwayat', 'label' => 'Riwayat aktivitas', 'url' => '#', 'super_admin' => false],
-        ['kunci' => 'admin', 'label' => 'Admin', 'url' => '#', 'super_admin' => true],
+        ['kunci' => 'admin', 'label' => 'Admin', 'url' => route('admin.admin.index'), 'super_admin' => true],
         ['kunci' => 'pengaturan', 'label' => 'Pengaturan', 'url' => route('admin.pengaturan'), 'super_admin' => true],
     ];
 @endphp
 
 <x-layouts.app :title="$title">
     <nav class="atap sticky top-0 z-30 flex items-center gap-1 overflow-x-auto px-5" aria-label="Menu admin">
-        <span class="mr-4 whitespace-nowrap py-3.5 text-base font-extrabold text-white">{{ config('app.name') }}</span>
+        <span class="mr-4 whitespace-nowrap py-3.5 text-base font-extrabold text-white">{{ \App\Models\Pengaturan::ambil('nama_kontrakan') }}</span>
 
         @foreach ($menu as $item)
             @continue($item['super_admin'] && auth()->user()->cannot('super-admin'))
@@ -33,11 +33,11 @@
             >{{ $item['label'] }}</a>
         @endforeach
 
-        <div class="ml-auto flex items-center gap-3 pl-4">
-            <span class="whitespace-nowrap text-sm text-slate-300">
+        <div class="ml-auto flex items-center gap-1 pl-4">
+            <a href="{{ route('akun.password') }}" class="whitespace-nowrap rounded-lg px-2.5 py-1.5 text-sm text-slate-300 hover:bg-white/10 hover:text-white focus-visible:outline-amber-300" title="Ganti password">
                 {{ auth()->user()->name }}
                 <span class="text-slate-400">({{ auth()->user()->role->label() }})</span>
-            </span>
+            </a>
             <form method="POST" action="{{ route('logout') }}" onsubmit="return confirm('Keluar dari akun?')">
                 @csrf
                 <button type="submit" class="whitespace-nowrap rounded-lg px-2.5 py-1.5 text-sm font-semibold text-white hover:bg-white/10 focus-visible:outline-amber-300">Keluar</button>
@@ -46,6 +46,10 @@
     </nav>
 
     <main class="mx-auto max-w-6xl px-4 py-6 sm:px-8 sm:py-8">
+        @session('status')
+            <p class="mb-5 rounded-[10px] border border-lunas/30 bg-lunas-bg px-4 py-3 text-sm font-semibold text-lunas" role="status">{{ $value }}</p>
+        @endsession
+
         {{ $slot }}
     </main>
 </x-layouts.app>

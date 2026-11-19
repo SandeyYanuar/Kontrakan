@@ -15,7 +15,7 @@
         </div>
 
         <div class="rounded-b-2xl border border-t-0 border-line bg-paper px-6 pt-6 pb-7">
-            <h1 class="text-2xl font-extrabold tracking-tight">{{ config('app.name') }}</h1>
+            <h1 class="text-2xl font-extrabold tracking-tight">{{ \App\Models\Pengaturan::ambil('nama_kontrakan') }}</h1>
             <p class="mt-1 text-sm text-muted">Masuk dengan nomor WhatsApp kamu.</p>
 
             <form method="POST" action="{{ route('login.store') }}" class="mt-6 space-y-4" novalidate>
