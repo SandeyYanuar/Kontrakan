@@ -70,6 +70,21 @@
     background-color: rgb(255 255 255 / 0.84);
 }
 
+/* Pop-up selalu padat (tidak tembus pandang), walaupun dibuka dari dalam panel kaca. */
+@utility popup {
+    background-color: #ffffff;
+    border: 1px solid var(--color-line);
+    box-shadow: 0 24px 60px rgb(24 34 47 / 0.35), 0 2px 6px rgb(24 34 47 / 0.12);
+
+    &::backdrop {
+        background-color: rgb(24 34 47 / 0.6);
+    }
+}
+
+dialog.popup .bg-paper {
+    background-color: #ffffff;
+}
+
 /* Pintu unit: dua panel dan gagang. Warna latar diberi dari luar. */
 @utility pintu-panel {
     border-radius: 2px;

@@ -143,9 +143,9 @@
         </button>
     </nav>
 
-    <dialog id="menu-lainnya" aria-label="Menu lainnya" class="kaca mx-2 mt-auto mb-20 w-[calc(100%-1rem)] max-w-none rounded-2xl p-2 text-ink backdrop:bg-ink/30 lg:hidden">
+    <dialog id="menu-lainnya" aria-label="Menu lainnya" class="popup mx-2 mt-auto mb-20 w-[calc(100%-1rem)] max-w-none rounded-2xl p-2 text-ink lg:hidden">
         @foreach ($semuaMenu->where('hp', false) as $item)
-            <a href="{{ $item['url'] }}" @class(['flex items-center gap-3 rounded-xl px-3 py-3 text-[15px] font-semibold', 'bg-white/80' => $aktif === $item['kunci']])>
+            <a href="{{ $item['url'] }}" @class(['flex items-center gap-3 rounded-xl px-3 py-3 text-[15px] font-semibold', 'bg-dicek-bg text-dicek' => $aktif === $item['kunci']])>
                 <svg viewBox="0 0 24 24" class="size-5" aria-hidden="true">{!! $ikon[$item['kunci']] !!}</svg>
                 {{ $item['label'] }}
             </a>

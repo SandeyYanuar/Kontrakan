@@ -13,7 +13,7 @@
 {{-- Pop-up cek bukti transfer: gambar di kiri, rincian dan tombol di kanan. --}}
 <dialog id="bukti-{{ $invoice->id }}" data-buka-otomatis="{{ $errorDiSini ? '1' : '' }}"
     aria-labelledby="judul-bukti-{{ $invoice->id }}"
-    class="m-auto w-[min(780px,calc(100vw-32px))] max-h-[calc(100vh-32px)] overflow-hidden rounded-2xl bg-paper p-0 text-ink backdrop:bg-ink/55">
+    class="popup m-auto w-[min(780px,calc(100vw-32px))] max-h-[calc(100vh-32px)] overflow-hidden rounded-2xl p-0 text-ink">
     <div class="grid max-h-[calc(100vh-32px)] overflow-auto md:grid-cols-[300px_minmax(0,1fr)]">
         <div class="flex flex-col items-center gap-2.5 bg-[#e9ecf0] p-5">
             @if ($pdf)
