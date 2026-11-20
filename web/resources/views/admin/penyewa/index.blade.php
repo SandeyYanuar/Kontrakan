@@ -18,11 +18,7 @@
                 @php($lease = $orang->leaseAktif)
                 @php($ktp = $orang->statusKtp())
                 <a href="{{ route('admin.penyewa.show', $orang) }}" @class(['flex items-center gap-3 rounded-xl border border-line bg-paper p-3.5', 'opacity-70' => ! $orang->is_active])>
-                    <span @class([
-                        'grid size-[38px] shrink-0 place-items-center rounded-full text-[13px] font-extrabold',
-                        'bg-roof text-white' => $lease,
-                        'border border-dashed border-[#aeb7c2] text-muted' => ! $lease,
-                    ])>{{ $lease?->unit->kode_unit ?? '–' }}</span>
+                    <x-rumah-unit :unit="$lease?->unit" />
                     <span class="min-w-0 flex-1">
                         <span class="block truncate font-semibold">{{ $orang->name }}</span>
                         <span class="block text-xs text-muted">{{ $orang->kode_penyewa }}, {{ $orang->is_active ? \App\Support\NomorHp::tampil($orang->phone) : 'sudah keluar' }}</span>
@@ -55,11 +51,7 @@
                         <tr @class(['text-muted' => ! $orang->is_active])>
                             <td class="px-4 py-3.5">
                                 <div class="flex items-center gap-3">
-                                    <span @class([
-                                        'grid size-[38px] shrink-0 place-items-center rounded-full text-[13px] font-extrabold',
-                                        'bg-roof text-white' => $lease,
-                                        'border border-dashed border-[#aeb7c2] text-muted' => ! $lease,
-                                    ])>{{ $lease?->unit->kode_unit ?? '–' }}</span>
+                                    <x-rumah-unit :unit="$lease?->unit" />
                                     <div>
                                         <p class="font-semibold text-ink">
                                             <a href="{{ route('admin.penyewa.show', $orang) }}" class="underline-offset-2 hover:underline">{{ $orang->name }}</a>

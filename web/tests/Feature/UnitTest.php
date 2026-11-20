@@ -77,3 +77,36 @@ test('admin biasa tidak bisa menambah atau mengubah unit', function () {
     expect($unit->fresh()->harga_sewa)->toBe(750000);
     $this->actingAs($admin)->get(route('admin.unit.index'))->assertDontSee('Tambah unit');
 });
+
+test('setiap unit baru otomatis mendapat warna logo yang belum dipakai', function () {
+    $superAdmin = User::factory()->superAdmin()->create();
+
+    foreach (['A1', 'A2', 'A3'] as $kode) {
+        $this->actingAs($superAdmin)->post(route('admin.unit.store'), ['kode_unit' => $kode, 'harga_sewa' => '750000']);
+    }
+
+    expect(Unit::pluck('warna')->unique())->toHaveCount(3);
+});
+
+test('super admin memilih warna logo unit', function () {
+    $unit = Unit::factory()->create(['kode_unit' => 'A1', 'harga_sewa' => 750000]);
+
+    $this->actingAs(User::factory()->superAdmin()->create())
+        ->put(route('admin.unit.update', $unit), ['kode_unit' => 'A1', 'harga_sewa' => '750000', 'warna' => '#b4507a'])
+        ->assertSessionHasNoErrors();
+
+    expect($unit->fresh()->warna)->toBe('#b4507a');
+
+    $this->actingAs(User::factory()->admin()->create())
+        ->get(route('admin.unit.index'))
+        ->assertSee('color: #b4507a', false);
+});
+
+test('warna di luar pilihan ditolak', function () {
+    $unit = Unit::factory()->create(['kode_unit' => 'A1']);
+
+    $this->actingAs(User::factory()->superAdmin()->create())
+        ->from(route('admin.unit.edit', $unit))
+        ->put(route('admin.unit.update', $unit), ['kode_unit' => 'A1', 'harga_sewa' => '750000', 'warna' => '#000000'])
+        ->assertSessionHasErrors('warna');
+});

@@ -63,7 +63,7 @@ class UnitController extends Controller
     }
 
     /**
-     * @return array{kode_unit: string, harga_sewa: int, keterangan: ?string}
+     * @return array{kode_unit: string, harga_sewa: int, keterangan: ?string, warna?: string}
      */
     private function validasi(Request $request, ?Unit $unit = null): array
     {
@@ -76,6 +76,7 @@ class UnitController extends Controller
             'kode_unit' => ['required', 'string', 'max:10', 'regex:/^[A-Z0-9\-]+$/', Rule::unique('units')->ignore($unit)],
             'harga_sewa' => ['required', 'integer', 'min:1', 'max:100000000'],
             'keterangan' => ['nullable', 'string', 'max:255'],
+            'warna' => ['nullable', Rule::in(Unit::PALET)],
         ], [
             'kode_unit.required' => 'Kode unit wajib diisi.',
             'kode_unit.unique' => 'Kode unit ini sudah dipakai.',
@@ -86,6 +87,10 @@ class UnitController extends Controller
 
         $data['harga_sewa'] = (int) $data['harga_sewa'];
         $data['keterangan'] ??= null;
+
+        if (empty($data['warna'])) {
+            unset($data['warna']);
+        }
 
         return $data;
     }

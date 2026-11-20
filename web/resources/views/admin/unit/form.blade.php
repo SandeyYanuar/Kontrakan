@@ -23,6 +23,20 @@
         />
         <x-field label="Keterangan" name="keterangan" :value="$unit->keterangan" opsional />
 
+        @php($warnaTerpilih = old('warna', $unit->warna ?? \App\Models\Unit::warnaBerikutnya()))
+        <fieldset>
+            <legend class="mb-2 text-sm font-semibold">Warna logo rumah</legend>
+            <div class="flex flex-wrap gap-2.5">
+                @foreach (\App\Models\Unit::PALET as $warna)
+                    <label class="cursor-pointer rounded-xl p-1 has-checked:bg-dicek-bg has-checked:ring-2 has-checked:ring-dicek" title="{{ $warna }}">
+                        <input type="radio" name="warna" value="{{ $warna }}" @checked($warnaTerpilih === $warna) class="sr-only">
+                        <x-rumah warna="" :style="'color: '.$warna" class="h-9 w-10" />
+                    </label>
+                @endforeach
+            </div>
+            <p class="mt-1.5 text-[13px] text-muted">Dipakai sebagai logo unit di daftar Unit, Penyewa, dan Kerusakan.</p>
+        </fieldset>
+
         <div class="flex gap-2 pt-2">
             <x-tombol>{{ $baru ? 'Tambah unit' : 'Simpan unit' }}</x-tombol>
             <x-tombol jenis="tenang" :href="route('admin.unit.index')">Batal</x-tombol>

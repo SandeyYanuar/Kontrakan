@@ -84,17 +84,21 @@
             @endforeach
         </nav>
 
-        <div class="mt-2 flex items-center gap-2.5 border-t border-ink/10 px-2 pt-3">
+        <form method="POST" action="{{ route('logout') }}" class="mt-2 border-t border-ink/10 pt-2" onsubmit="return confirm('Keluar dari akun?')">
+            @csrf
+            <button type="submit" class="flex w-full items-center gap-2.5 rounded-[10px] px-2.5 py-2 text-sm font-semibold text-telat hover:bg-white/45">
+                <svg viewBox="0 0 24 24" class="size-[18px] shrink-0" aria-hidden="true"><path d="M14 5V4H5v16h9v-1M10 12h10M17 9l3 3-3 3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Keluar
+            </button>
+        </form>
+
+        <a href="{{ route('akun.password') }}" class="mt-1 flex items-center gap-2.5 rounded-[10px] px-2 py-2 hover:bg-white/45" title="Ganti password">
             <span class="grid size-8 shrink-0 place-items-center rounded-full bg-roof text-[13px] font-extrabold text-white">{{ mb_substr(auth()->user()->name, 0, 1) }}</span>
-            <a href="{{ route('akun.password') }}" class="min-w-0 flex-1" title="Ganti password">
+            <span class="min-w-0">
                 <span class="block truncate text-[13px] font-bold">{{ auth()->user()->name }}</span>
                 <span class="block text-[11px] text-muted">{{ auth()->user()->role->label() }}</span>
-            </a>
-            <form method="POST" action="{{ route('logout') }}" onsubmit="return confirm('Keluar dari akun?')">
-                @csrf
-                <button type="submit" class="rounded-lg px-2 py-1.5 text-xs font-bold text-telat hover:bg-white/60">Keluar</button>
-            </form>
-        </div>
+            </span>
+        </a>
     </aside>
 
     {{-- HP: bilah atas kaca. --}}
@@ -142,13 +146,20 @@
                 {{ $item['label'] }}
             </a>
         @endforeach
-        <div class="mt-1 flex items-center justify-between border-t border-ink/10 px-3 pt-2">
-            <a href="{{ route('akun.password') }}" class="py-2 text-sm font-semibold">Ganti password</a>
-            <form method="POST" action="{{ route('logout') }}" onsubmit="return confirm('Keluar dari akun?')">
-                @csrf
-                <button type="submit" class="py-2 text-sm font-bold text-telat">Keluar</button>
-            </form>
-        </div>
+        <form method="POST" action="{{ route('logout') }}" class="mt-1 border-t border-ink/10 pt-1" onsubmit="return confirm('Keluar dari akun?')">
+            @csrf
+            <button type="submit" class="flex w-full items-center gap-3 rounded-xl px-3 py-3 text-[15px] font-semibold text-telat">
+                <svg viewBox="0 0 24 24" class="size-5" aria-hidden="true"><path d="M14 5V4H5v16h9v-1M10 12h10M17 9l3 3-3 3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Keluar
+            </button>
+        </form>
+        <a href="{{ route('akun.password') }}" class="flex items-center gap-3 rounded-xl px-3 py-2.5">
+            <span class="grid size-8 shrink-0 place-items-center rounded-full bg-roof text-[13px] font-extrabold text-white">{{ mb_substr(auth()->user()->name, 0, 1) }}</span>
+            <span>
+                <span class="block text-sm font-bold">{{ auth()->user()->name }}</span>
+                <span class="block text-xs text-muted">{{ auth()->user()->role->label() }}, ganti password</span>
+            </span>
+        </a>
     </dialog>
 
     <script>
