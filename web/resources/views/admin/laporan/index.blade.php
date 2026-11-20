@@ -21,7 +21,7 @@
                 <a href="{{ route('admin.laporan.show', $item) }}" class="block rounded-xl border border-line bg-paper p-4 hover:border-dicek">
                     <div class="flex items-start justify-between gap-3">
                         <div class="flex items-center gap-3">
-                            <span class="grid size-[38px] shrink-0 place-items-center rounded-lg bg-roof text-[13px] font-extrabold text-white">{{ $item->lease->unit->kode_unit }}</span>
+                            <span class="grid size-[38px] shrink-0 place-items-center rounded-full bg-roof text-[13px] font-extrabold text-white">{{ $item->lease->unit->kode_unit }}</span>
                             <div>
                                 <p class="font-bold">{{ $item->labelKategori() }}</p>
                                 <p class="text-xs text-muted">{{ $item->lease->penyewa->name }} ({{ $item->lease->penyewa->kode_penyewa }}), {{ Format::tanggalPendek($item->created_at) }}</p>

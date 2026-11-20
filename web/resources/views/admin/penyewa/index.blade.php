@@ -19,7 +19,7 @@
                 @php($ktp = $orang->statusKtp())
                 <a href="{{ route('admin.penyewa.show', $orang) }}" @class(['flex items-center gap-3 rounded-xl border border-line bg-paper p-3.5', 'opacity-70' => ! $orang->is_active])>
                     <span @class([
-                        'grid size-[38px] shrink-0 place-items-center rounded-lg text-[13px] font-extrabold',
+                        'grid size-[38px] shrink-0 place-items-center rounded-full text-[13px] font-extrabold',
                         'bg-roof text-white' => $lease,
                         'border border-dashed border-[#aeb7c2] text-muted' => ! $lease,
                     ])>{{ $lease?->unit->kode_unit ?? '–' }}</span>
@@ -56,7 +56,7 @@
                             <td class="px-4 py-3.5">
                                 <div class="flex items-center gap-3">
                                     <span @class([
-                                        'grid size-[38px] shrink-0 place-items-center rounded-lg text-[13px] font-extrabold',
+                                        'grid size-[38px] shrink-0 place-items-center rounded-full text-[13px] font-extrabold',
                                         'bg-roof text-white' => $lease,
                                         'border border-dashed border-[#aeb7c2] text-muted' => ! $lease,
                                     ])>{{ $lease?->unit->kode_unit ?? '–' }}</span>

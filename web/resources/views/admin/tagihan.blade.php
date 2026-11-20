@@ -136,7 +136,7 @@
                             <tr data-baris="{{ $b->lease->unit->kode_unit }}" class="transition-colors duration-200 data-[terpilih]:bg-[#f3f7fd]">
                                 <td class="px-4 py-3.5">
                                     <div class="flex items-center gap-3">
-                                        <span class="{{ WarnaStatus::latar($b->status()) }} grid size-[38px] shrink-0 place-items-center rounded-lg text-[13px] font-extrabold text-white">{{ $b->lease->unit->kode_unit }}</span>
+                                        <span class="{{ WarnaStatus::latar($b->status()) }} grid size-[38px] shrink-0 place-items-center rounded-full text-[13px] font-extrabold text-white">{{ $b->lease->unit->kode_unit }}</span>
                                         <div>
                                             <p class="font-semibold">
                                                 {{ $penyewa->name }}
@@ -182,7 +182,7 @@
                             <article data-baris="{{ $b->lease->unit->kode_unit }}" class="rounded-xl border border-line bg-paper p-3.5 data-[terpilih]:border-dicek">
                                 <div class="flex items-center justify-between gap-2">
                                     <div class="flex items-center gap-3">
-                                        <span class="{{ WarnaStatus::latar($b->status()) }} grid size-[38px] shrink-0 place-items-center rounded-lg text-[13px] font-extrabold text-white">{{ $b->lease->unit->kode_unit }}</span>
+                                        <span class="{{ WarnaStatus::latar($b->status()) }} grid size-[38px] shrink-0 place-items-center rounded-full text-[13px] font-extrabold text-white">{{ $b->lease->unit->kode_unit }}</span>
                                         <div>
                                             <p class="font-semibold">{{ $penyewa->name }}</p>
                                             <p class="text-xs text-muted">{{ $penyewa->kode_penyewa }}@if ($b->harusDibayar()->isNotEmpty()), {{ Format::rupiah($b->totalHarusDibayar()) }}@endif</p>

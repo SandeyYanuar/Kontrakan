@@ -24,7 +24,7 @@
         <div class="space-y-2.5 md:hidden">
             @foreach ($units as $unit)
                 <div class="flex items-center gap-3 rounded-xl border border-line bg-paper p-3.5">
-                    <span class="grid size-[38px] shrink-0 place-items-center rounded-lg bg-roof text-[13px] font-extrabold text-white">{{ $unit->kode_unit }}</span>
+                    <span class="grid size-[38px] shrink-0 place-items-center rounded-full bg-roof text-[13px] font-extrabold text-white">{{ $unit->kode_unit }}</span>
                     <span class="min-w-0 flex-1">
                         <span class="block font-semibold">{{ \App\Support\Format::rupiah($unit->harga_sewa) }} <span class="text-xs font-normal text-muted">per bulan</span></span>
                         <span class="block truncate text-xs text-muted">
@@ -55,7 +55,7 @@
                     @foreach ($units as $unit)
                         <tr>
                             <td class="px-4 py-3.5">
-                                <span class="inline-grid size-9 place-items-center rounded-lg bg-roof text-[13px] font-extrabold text-white">{{ $unit->kode_unit }}</span>
+                                <span class="inline-grid size-9 place-items-center rounded-full bg-roof text-[13px] font-extrabold text-white">{{ $unit->kode_unit }}</span>
                             </td>
                             <td class="px-4 py-3.5 font-semibold">{{ \App\Support\Format::rupiah($unit->harga_sewa) }}</td>
                             <td class="px-4 py-3.5">
