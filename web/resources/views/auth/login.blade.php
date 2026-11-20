@@ -1,14 +1,11 @@
 <x-layouts.app title="Masuk">
     <main class="mx-auto flex min-h-screen max-w-md flex-col px-4 py-8 sm:justify-center">
-        {{-- Fasad kecil: atap, deretan pintu, teras. Motif utama aplikasi. --}}
+        {{-- Deretan rumah kecil: motif utama aplikasi. --}}
         <div class="overflow-hidden rounded-t-2xl border border-b-0 border-line" aria-hidden="true">
             <div class="atap h-4"></div>
-            <div class="flex items-end justify-center gap-3 bg-paper px-6 pt-5">
-                @foreach (['bg-lunas', 'bg-dicek', 'bg-dekat', 'bg-lunas', 'bg-telat'] as $warna)
-                    <div class="{{ $warna }} grid h-16 w-10 grid-rows-[1fr_1.3fr] gap-1 rounded-t-[3px] p-1.5">
-                        <i class="rounded-[2px] bg-white/15 shadow-[inset_0_0_0_1px_rgba(0,0,0,0.12)]"></i>
-                        <i class="rounded-[2px] bg-white/15 shadow-[inset_0_0_0_1px_rgba(0,0,0,0.12)]"></i>
-                    </div>
+            <div class="flex items-end justify-center gap-2 bg-paper px-6 pt-5 pb-1">
+                @foreach (['text-lunas', 'text-dicek', 'text-dekat', 'text-lunas', 'text-telat'] as $warna)
+                    <x-rumah :warna="$warna" class="h-12 w-14 drop-shadow-sm" />
                 @endforeach
             </div>
             <div class="teras h-2.5"></div>

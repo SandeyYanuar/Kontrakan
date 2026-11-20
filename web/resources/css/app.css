@@ -56,6 +56,20 @@
     border-top: 2px solid #cdd3da;
 }
 
+/* Kaca buram untuk dashboard admin. Warna putih hangat menyatu dengan foto ruang tamu. */
+@utility kaca {
+    background-color: rgb(255 252 248 / 0.62);
+    -webkit-backdrop-filter: blur(24px) saturate(1.35);
+    backdrop-filter: blur(24px) saturate(1.35);
+    border: 1px solid rgb(255 255 255 / 0.6);
+    box-shadow: 0 12px 32px rgb(24 34 47 / 0.12), inset 0 1px 0 rgb(255 255 255 / 0.7);
+}
+
+/* Kartu putih di dalam panel kaca dibuat sedikit tembus supaya tetap terasa kaca, tapi tulisan tetap jelas. */
+.panel-kaca .bg-paper {
+    background-color: rgb(255 255 255 / 0.84);
+}
+
 /* Pintu unit: dua panel dan gagang. Warna latar diberi dari luar. */
 @utility pintu-panel {
     border-radius: 2px;

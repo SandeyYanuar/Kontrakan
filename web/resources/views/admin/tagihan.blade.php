@@ -12,7 +12,7 @@
     $sebelumnya = PeriodeBayar::awalBulan($periode)->subMonth()->format('Y-m');
     $berikutnya = PeriodeBayar::berikutnya($periode);
 
-    /** Teks pendek di bawah pintu. */
+    /** Teks pendek di bawah ikon rumah. */
     $ketPintu = fn (?BarisTagihan $b): string => match (true) {
         $b === null => 'Kosong',
         $b->lewatBatasTunggakan() => 'Lewat batas',
@@ -75,50 +75,36 @@
         </div>
     </div>
 
-    {{-- Deretan pintu: satu pintu per unit, warnanya status paling mendesak. --}}
+    {{-- Deretan rumah: satu ikon rumah per unit, warnanya status paling mendesak. --}}
     @if ($units->isNotEmpty())
-        {{-- HP: deretan pintu mengecil jadi strip warna. --}}
-        <div class="overflow-hidden rounded-xl border border-line bg-paper md:hidden" aria-hidden="true">
-            <div class="atap h-2.5"></div>
-            <div class="flex gap-1.5 px-3 pt-3">
+        {{-- HP: rumah kecil dalam satu baris. --}}
+        <div class="rounded-xl border border-line bg-paper px-2 pt-3 pb-2 md:hidden" aria-hidden="true">
+            <div class="flex gap-1">
                 @foreach ($units as $item)
-                    <div class="flex flex-1 flex-col items-center gap-1">
-                        <span class="{{ $item['baris'] ? WarnaStatus::latar($item['baris']->status()) : 'pintu-kosong' }} h-8 w-full rounded-t-[3px]"></span>
+                    <div class="flex min-w-0 flex-1 flex-col items-center gap-0.5">
+                        <x-rumah :warna="$item['baris'] ? WarnaStatus::ikon($item['baris']->status()) : 'text-belum'" :kosong="! $item['baris']" class="h-7 w-8" />
                         <span class="text-[10px] font-bold text-muted">{{ $item['unit']->kode_unit }}</span>
                     </div>
                 @endforeach
             </div>
-            <div class="teras mt-1 h-2"></div>
         </div>
 
-        <div class="hidden overflow-hidden rounded-2xl border border-line bg-paper md:block" aria-label="Deretan unit. Pilih pintu untuk melihat penyewanya.">
-            <div class="atap relative h-[22px]"></div>
-            <div class="flex overflow-x-auto px-3 pt-6">
+        <div class="hidden rounded-2xl border border-line bg-paper px-3 pt-5 pb-3 md:block" aria-label="Deretan unit. Pilih rumah untuk melihat penyewanya.">
+            <div class="flex overflow-x-auto">
                 @foreach ($units as $item)
                     @php($b = $item['baris'])
                     <button type="button"
                         @if ($b) data-unit="{{ $item['unit']->kode_unit }}" @endif
-                        class="group flex min-w-[92px] flex-1 flex-col items-center border-r border-dashed border-[#e3e7ec] px-2.5 last:border-r-0 {{ $b ? 'cursor-pointer' : 'cursor-default' }}"
+                        class="group flex min-w-[88px] flex-1 flex-col items-center rounded-xl px-2 py-2 {{ $b ? 'cursor-pointer hover:bg-white/60' : 'cursor-default' }} [&.terpilih]:bg-white/80"
                         aria-label="Unit {{ $item['unit']->kode_unit }}: {{ $b ? $b->lease->penyewa->name.', '.$b->teksStatus() : 'kosong' }}"
                         @unless ($b) tabindex="-1" @endunless>
-                        <span @class([
-                            'mb-2 h-[7px] w-3.5 rounded-b-lg',
-                            'bg-[#f5c451] shadow-[0_4px_14px_2px_rgba(245,196,81,0.55)]' => $b,
-                            'bg-[#c9cfd7]' => ! $b,
-                        ])></span>
-                        <span class="mb-2 rounded border border-line bg-soft px-[7px] py-px text-xs font-extrabold">{{ $item['unit']->kode_unit }}</span>
-                        <span class="{{ $b ? WarnaStatus::latar($b->status()) : 'pintu-kosong' }} relative grid h-[104px] w-[58px] grid-rows-[1fr_1.3fr] gap-[7px] rounded-t px-2 py-[9px] transition-transform duration-200 group-hover:-translate-y-[3px] group-[.terpilih]:-translate-y-[3px]">
-                            <i @class(['pintu-panel', '!bg-transparent' => ! $b])></i>
-                            <i @class(['pintu-panel', '!bg-transparent' => ! $b])></i>
-                            @if ($b)
-                                <i class="absolute top-14 right-2 size-1.5 rounded-full bg-[#f2e6c8]"></i>
-                            @endif
-                        </span>
-                        <span class="{{ $b ? WarnaStatus::teks($b->status()) : 'text-belum' }} mt-2.5 mb-0 h-[18px] text-xs font-semibold">{{ $ketPintu($b) }}</span>
+                        <x-rumah :warna="$b ? WarnaStatus::ikon($b->status()) : 'text-belum'" :kosong="! $b"
+                            class="h-16 w-[72px] drop-shadow-sm transition-transform duration-200 group-hover:-translate-y-[3px] group-[.terpilih]:-translate-y-[3px]" />
+                        <span class="mt-1.5 text-sm font-extrabold">{{ $item['unit']->kode_unit }}</span>
+                        <span class="{{ $b ? WarnaStatus::teks($b->status()) : 'text-belum' }} h-[18px] text-xs font-semibold">{{ $ketPintu($b) }}</span>
                     </button>
                 @endforeach
             </div>
-            <div class="teras mt-2.5 h-3.5"></div>
         </div>
     @endif
 
@@ -263,7 +249,7 @@
             if (dialog.dataset.bukaOtomatis) { bukaBukti(dialog); }
         });
 
-        // Klik pintu: sorot baris penyewanya dan gulir ke sana.
+        // Klik rumah: sorot baris penyewanya dan gulir ke sana.
         document.querySelectorAll('[data-unit]').forEach(function (pintu) {
             pintu.addEventListener('click', function () {
                 var unit = pintu.dataset.unit;

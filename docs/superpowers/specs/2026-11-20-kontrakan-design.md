@@ -191,7 +191,11 @@ Mengikuti alur dari Pangeran.
   | telat / ditolak | `#A8261C` | telat atau ditolak |
   | WhatsApp | `#1DA851` | hanya tombol WhatsApp |
 
-- **Motif utama:** atap, deretan pintu, dan teras. Menu admin diletakkan di strip atap. Selain motif ini, tampilan dibuat tenang.
+- **Pembaruan 20 November 2026 (keputusan Pangeran):**
+  - Dashboard admin bergaya **kaca buram** di atas **foto ruang tamu** (`public/img/latar-rumah.jpg`, dari Unsplash). Super admin bisa menggantinya dengan foto kontrakan sendiri di Pengaturan. Sisi penyewa tetap tanpa kaca.
+  - Laptop: bilah samping kaca (kelompok Harian dan Kelola, angka merah untuk tagihan perlu ditindak dan laporan belum selesai). HP: bilah atas dan bilah bawah kaca (Tagihan, Penyewa, Kerusakan, Lainnya).
+  - **Penanda unit memakai ikon rumah**, bukan pintu, dengan warna status yang sama. Ikon rumah juga dipakai di logo, beranda penyewa, dan halaman login.
+- **Motif awal (sebelum pembaruan):** atap, deretan pintu, dan teras. Menu admin diletakkan di strip atap. Selain motif ini, tampilan dibuat tenang.
 - Mockup acuan ada di `.superpowers/brainstorm/24288-1795105351/content/`:
   - `admin-tabel-v5.html` (tabel admin)
   - `log-aktivitas-v2.html` (riwayat aktivitas)

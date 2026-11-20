@@ -27,6 +27,7 @@ class Pengaturan extends Model
         'whatsapp_admin' => null,
         'tanggal_mulai_bayar' => '27',
         'tanggal_jatuh_tempo' => '5',
+        'latar_dashboard' => null,
     ];
 
     public static function ambil(string $kunci): ?string

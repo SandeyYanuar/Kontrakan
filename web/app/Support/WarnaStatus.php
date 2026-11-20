@@ -41,4 +41,18 @@ class WarnaStatus
             default => 'text-muted',
         };
     }
+
+    /**
+     * Warna ikon rumah (dipakai lewat currentColor).
+     */
+    public static function ikon(string $status): string
+    {
+        return match ($status) {
+            Invoice::LABEL_LUNAS => 'text-lunas',
+            Invoice::LABEL_MENUNGGU => 'text-dicek',
+            Invoice::LABEL_DEKAT => 'text-dekat',
+            Invoice::LABEL_TELAT, Invoice::LABEL_DITOLAK => 'text-telat',
+            default => 'text-belum',
+        };
+    }
 }
