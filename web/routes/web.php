@@ -33,6 +33,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/logout', [LoginController::class, 'destroy'])->name('logout');
 
     Route::get('/kuitansi/{invoice}', KuitansiController::class)->middleware('peran:super_admin,admin,tenant')->name('kuitansi');
+    Route::get('/latar', [PengaturanController::class, 'latar'])->middleware('peran:super_admin,admin,tenant')->name('latar');
     Route::get('/laporan/foto/{media}', LaporanFotoController::class)->middleware('peran:super_admin,admin,tenant')->name('laporan.foto');
 
     Route::middleware('peran:super_admin,admin,tenant')->prefix('akun')->name('akun.')->group(function () {

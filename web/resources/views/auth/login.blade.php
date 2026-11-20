@@ -1,17 +1,18 @@
-<x-layouts.app title="Masuk">
+<x-layouts.app title="Masuk" class="bg-[#cfc6ba]">
+    <x-latar-rumah :pribadi="false" />
+
     <main class="mx-auto flex min-h-screen max-w-md flex-col px-4 py-8 sm:justify-center">
         {{-- Deretan rumah kecil: motif utama aplikasi. --}}
-        <div class="overflow-hidden rounded-t-2xl border border-b-0 border-line" aria-hidden="true">
-            <div class="atap h-4"></div>
-            <div class="flex items-end justify-center gap-2 bg-paper px-6 pt-5 pb-1">
+        <div class="kaca panel-kaca overflow-hidden rounded-[22px]">
+        <div aria-hidden="true">
+            <div class="flex items-end justify-center gap-2 px-6 pt-6 pb-1">
                 @foreach (['text-lunas', 'text-dicek', 'text-dekat', 'text-lunas', 'text-telat'] as $warna)
                     <x-rumah :warna="$warna" class="h-12 w-14 drop-shadow-sm" />
                 @endforeach
             </div>
-            <div class="teras h-2.5"></div>
         </div>
 
-        <div class="rounded-b-2xl border border-t-0 border-line bg-paper px-6 pt-6 pb-7">
+        <div class="px-6 pt-5 pb-7">
             <h1 class="text-2xl font-extrabold tracking-tight">{{ \App\Models\Pengaturan::ambil('nama_kontrakan') }}</h1>
             <p class="mt-1 text-sm text-muted">Masuk dengan nomor WhatsApp kamu.</p>
 
@@ -74,6 +75,7 @@
                     <a href="{{ $linkLupaPassword }}" target="_blank" rel="noopener" class="font-semibold text-dicek underline-offset-2 hover:underline">Minta reset lewat WhatsApp</a>
                 </p>
             @endif
+        </div>
         </div>
     </main>
 </x-layouts.app>

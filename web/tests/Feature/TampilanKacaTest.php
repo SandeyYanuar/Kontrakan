@@ -66,7 +66,7 @@ test('super admin mengganti dan mengembalikan foto latar', function () {
     Storage::disk('local')->assertExists($path);
     expect(ActivityLog::where('aksi', Aksi::PengaturanDiubah)->latest('id')->first()->data)->toHaveKey('latar_dashboard');
 
-    $this->actingAs($superAdmin)->get(route('admin.tagihan'))->assertSee(route('admin.latar'), false);
+    $this->actingAs($superAdmin)->get(route('admin.tagihan'))->assertSee(route('latar'), false);
     $this->actingAs($superAdmin)->get(route('admin.latar'))->assertOk();
 
     unset($data['latar']);
@@ -85,4 +85,23 @@ test('foto latar harus gambar', function () {
             'latar' => UploadedFile::fake()->create('a.pdf', 10, 'application/pdf'),
         ])
         ->assertSessionHasErrors('latar');
+});
+
+test('tombol keluar selalu terlihat di bilah atas HP admin dan di kepala beranda penyewa', function () {
+    $html = $this->actingAs(User::factory()->admin()->create())->get(route('admin.tagihan'))->getContent();
+    $bilahAtas = substr($html, strpos($html, '<header'), strpos($html, '</header>') - strpos($html, '<header'));
+    expect($bilahAtas)->toContain(route('logout'))->toContain('Keluar');
+
+    $penyewa = Lease::factory()->create()->penyewa;
+    $html = $this->actingAs($penyewa)->get(route('penyewa.beranda'))->getContent();
+    $kepala = substr($html, strpos($html, '<header'), strpos($html, '</header>') - strpos($html, '<header'));
+    expect($kepala)->toContain(route('logout'))->toContain('Keluar');
+});
+
+test('sisi penyewa dan halaman login juga memakai latar foto rumah dan panel kaca', function () {
+    $this->get(route('login'))->assertSee('img/latar-rumah.jpg', false)->assertSee('kaca', false);
+
+    $penyewa = Lease::factory()->create()->penyewa;
+    $this->actingAs($penyewa)->get(route('penyewa.beranda'))->assertSee('img/latar-rumah.jpg', false)->assertSee('panel-kaca', false);
+    $this->actingAs($penyewa)->get(route('latar'))->assertRedirect(asset('img/latar-rumah.jpg'));
 });

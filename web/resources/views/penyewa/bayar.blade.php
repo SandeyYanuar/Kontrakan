@@ -1,7 +1,7 @@
 @php use App\Support\Format; @endphp
 
 <x-layouts.penyewa title="Upload bukti transfer">
-    <div class="min-h-screen bg-paper p-4">
+    <div class="p-4">
         <a href="{{ route('penyewa.beranda') }}" class="text-sm text-muted">Kembali</a>
         <h1 class="mt-3 text-[19px] font-extrabold tracking-tight">Upload bukti transfer</h1>
         <p class="mb-4 text-[13px] text-muted">Tagihan {{ Format::bulan($invoice->periode) }}, {{ Format::rupiah($invoice->total) }}</p>

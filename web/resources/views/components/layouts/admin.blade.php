@@ -43,16 +43,11 @@
         'laporan' => [$jumlahMenu['laporan'], $jumlahMenu['laporan'].' laporan belum selesai'],
     ];
 
-    $latar = \App\Models\Pengaturan::ambil('latar_dashboard')
-        ? route('admin.latar', ['v' => substr(md5(\App\Models\Pengaturan::ambil('latar_dashboard')), 0, 8)])
-        : asset('img/latar-rumah.jpg');
     $nama = \App\Models\Pengaturan::ambil('nama_kontrakan');
 @endphp
 
 <x-layouts.app :title="$title" class="bg-[#cfc6ba]">
-    {{-- Latar foto rumah, sedikit diredupkan supaya kaca dan tulisan tetap jelas. --}}
-    <div class="fixed inset-0 -z-10 bg-cover bg-center saturate-[.85]" style="background-image: url('{{ $latar }}')" aria-hidden="true"></div>
-    <div class="fixed inset-0 -z-10 bg-gradient-to-br from-[#f3ede6]/35 via-transparent to-[#18222f]/25" aria-hidden="true"></div>
+    <x-latar-rumah />
 
     {{-- Laptop: bilah samping kaca. --}}
     <aside class="kaca fixed inset-y-3 left-3 z-30 hidden w-60 flex-col rounded-[20px] px-3 py-4 lg:flex" aria-label="Menu admin">
@@ -107,7 +102,16 @@
             <x-rumah warna="text-lunas" class="size-7 shrink-0" />
             <span class="truncate text-[15px] font-extrabold">{{ $nama }}</span>
         </a>
-        <a href="{{ route('akun.password') }}" class="grid size-8 shrink-0 place-items-center rounded-full bg-roof text-[13px] font-extrabold text-white" title="{{ auth()->user()->name }}, ganti password">{{ mb_substr(auth()->user()->name, 0, 1) }}</a>
+        <div class="flex shrink-0 items-center gap-1.5">
+            <form method="POST" action="{{ route('logout') }}" onsubmit="return confirm('Keluar dari akun?')">
+                @csrf
+                <button type="submit" class="flex items-center gap-1.5 rounded-xl px-2.5 py-1.5 text-sm font-bold text-telat hover:bg-white/60">
+                    <svg viewBox="0 0 24 24" class="size-[18px]" aria-hidden="true"><path d="M14 5V4H5v16h9v-1M10 12h10M17 9l3 3-3 3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    Keluar
+                </button>
+            </form>
+            <a href="{{ route('akun.password') }}" class="grid size-8 place-items-center rounded-full bg-roof text-[13px] font-extrabold text-white" title="{{ auth()->user()->name }}, ganti password">{{ mb_substr(auth()->user()->name, 0, 1) }}</a>
+        </div>
     </header>
 
     <main class="px-2 pt-3 pb-28 lg:py-3 lg:pr-3 lg:pl-[16.5rem]">
