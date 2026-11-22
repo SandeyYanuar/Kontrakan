@@ -6,3 +6,8 @@
 docs/
 PLANNING.md
 skills-lock.json
+.env
+.env.*
+!.env.example
+AGENTS.md
+CLAUDE.md
