@@ -2,3 +2,6 @@
 .superpowers/
 .agents/
 .claude/
+.docs/docs/
+PLANNING.md
+skills-lock.json
